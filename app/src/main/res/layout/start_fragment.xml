@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="@color/background"
   tools:context=".ui.StartFragment">
 
   <TextView
@@ -68,17 +69,40 @@
     android:layout_height="1dp"
     android:layout_marginBottom="@dimen/margin8"
     android:background="@android:color/black"
-    app:layout_constraintBottom_toTopOf="@+id/btn_valve"
+    app:layout_constraintBottom_toTopOf="@+id/btn_valve2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
 
   <Button
-    android:id="@+id/btn_valve"
+    android:id="@+id/btn_valve1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin8"
+    android:text="@string/valve1"
+    android:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/btn_valve2"
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <Button
+    android:id="@+id/btn_valve2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin8"
+    android:text="@string/start"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
+
+  <Button
+    android:id="@+id/btn_valve3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin8"
+    android:text="@string/valve2"
+    android:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/btn_valve2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

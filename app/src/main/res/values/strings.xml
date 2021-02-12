@@ -2,4 +2,8 @@
   <string name="app_name">PLC4J</string>
   <string name="modeAuto">АВТОМАТЧЕСКИЙ РЕЖИМ</string>
   <string name="modeManual">РУЧНОЙ РЕЖИМ</string>
+  <string name="start">Пуск</string>
+  <string name="valve1">Клапан1</string>
+  <string name="valve2">Клапан2</string>
+  <string name="valve3">Клапан3</string>
 </resources>
