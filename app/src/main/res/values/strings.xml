@@ -1,0 +1,5 @@
+<resources>
+  <string name="app_name">PLC4J</string>
+  <string name="modeAuto">АВТОМАТЧЕСКИЙ РЕЖИМ</string>
+  <string name="modeManual">РУЧНОЙ РЕЖИМ</string>
+</resources>
