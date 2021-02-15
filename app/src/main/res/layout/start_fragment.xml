@@ -7,28 +7,40 @@
   android:background="@color/background"
   tools:context=".ui.StartFragment">
 
-  <TextView
-    android:id="@+id/tv_mode"
+
+  <com.skydoves.powerspinner.PowerSpinnerView
+    android:id="@+id/spinner_mode"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin8"
-    android:textAlignment="center"
+    android:background="@color/background"
+    android:gravity="center"
+    android:hint="@string/modeAuto"
+    android:padding="10dp"
     android:textColor="@color/black"
-    android:textSize="26sp"
-    android:textStyle="bold"
+    android:textColorHint="@color/black"
+    android:textSize="14.5sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    tools:text="АВТОМАТИЧЕСКИЙ РЕЖИМ" />
+    app:spinner_arrow_drawable="@drawable/ic_arrow_down"
+    app:spinner_arrow_gravity="end"
+    app:spinner_arrow_padding="8dp"
+    app:spinner_divider_color="@color/black"
+    app:spinner_divider_show="true"
+    app:spinner_divider_size="0.4dp"
+    app:spinner_item_array="@array/mode"
+    app:spinner_popup_animation="dropdown"
+    app:spinner_popup_background="@color/background"
+    app:spinner_popup_elevation="14dp" />
 
   <View
+    android:id="@+id/view"
     android:layout_width="match_parent"
     android:layout_height="1dp"
-    android:layout_marginTop="@dimen/margin8"
     android:background="@android:color/black"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tv_mode" />
+    app:layout_constraintTop_toBottomOf="@+id/spinner_mode" />
 
   <TextView
     android:id="@+id/tv_text"
@@ -104,5 +116,6 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/btn_valve2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

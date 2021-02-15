@@ -6,4 +6,9 @@
   <string name="valve1">Клапан1</string>
   <string name="valve2">Клапан2</string>
   <string name="valve3">Клапан3</string>
+
+  <string-array name="mode">
+    <item>АВТОМАТИЧЕСКИЙ РЕЖИМ</item>
+    <item>РУЧНОЙ РЕЖИМ</item>
+  </string-array>
 </resources>
