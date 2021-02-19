@@ -20,7 +20,7 @@ class Temp {
   val master = modbusFactory
     .createTcpMaster(ipParameters, true) as TcpMaster
 
-  val loc = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)
+  val loc = BaseLocator.holdingRegister(1, 0, Da taType.TWO_BYTE_INT_UNSIGNED)
   val loc1 = BaseLocator.holdingRegister(1, 1, DataType.TWO_BYTE_INT_UNSIGNED)
 
   var i = 0
