@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,7 @@ class StartFragment : Fragment() {
   private lateinit var btnValve1: Button
   private lateinit var btnValve2: Button
   private lateinit var btnValve3: Button
+  private lateinit var description: TextView
 
   val ipParameters: IpParameters = IpParameters().apply {
     host = "192.168.122.85"
@@ -49,6 +51,7 @@ class StartFragment : Fragment() {
     btnValve1 = view.findViewById(R.id.btn_valve1)
     btnValve2 = view.findViewById(R.id.btn_valve2)
     btnValve3 = view.findViewById(R.id.btn_valve3)
+    description = view.findViewById(R.id.tv_description)
     return view
   }
 
@@ -58,10 +61,8 @@ class StartFragment : Fragment() {
 
 //    val connection = Connection
 
-
-
 //    Log.d("AAA", connection.master.getValue(connection.loc).toString())
-    Log.d("AAA", master.getValue(loc).toString())
+//    Log.d("AAA", master.getValue(loc).toString())
 
     powerSpinnerView.setOnSpinnerDismissListener {
       when (powerSpinnerView.selectedIndex) {
@@ -78,6 +79,8 @@ class StartFragment : Fragment() {
       }
     }
     //mBinding.tvMode.setText(R.string.modeAuto)
+
+    description.setText(R.string.valveLowerSeatFlush)
   }
 
   override fun onDestroy() {

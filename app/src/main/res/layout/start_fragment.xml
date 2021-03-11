@@ -16,15 +16,16 @@
     android:gravity="center"
     android:hint="@string/modeAuto"
     android:padding="10dp"
-    android:textColor="@color/white"
-    android:textColorHint="@color/white"
+    android:textColor="@color/gray"
+    android:textColorHint="@color/gray"
+
     android:textSize="18sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:spinner_arrow_gravity="end"
     app:spinner_arrow_padding="8dp"
-    app:spinner_divider_color="@color/white"
+    app:spinner_divider_color="@color/gray"
     app:spinner_divider_show="true"
     app:spinner_divider_size="0.4dp"
     app:spinner_item_array="@array/mode"
@@ -36,16 +37,30 @@
     android:id="@+id/view_top"
     android:layout_width="match_parent"
     android:layout_height="1dp"
-    android:background="@color/white"
+    android:background="@color/gray"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/spinner_mode" />
 
+  <TextView
+    android:layout_marginStart="@dimen/margin8"
+    android:id="@+id/tv_description"
+    android:layout_width="0dp"
+    android:layout_height="100dp"
+    android:textAlignment="center"
+    android:textSize="12sp"
+    app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+    app:layout_constraintEnd_toStartOf="@+id/iv_valve"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/view_top"
+    tools:text="@string/valveOpen" />
+
   <ImageView
-    android:layout_width="264dp"
-    android:layout_height="461dp"
+    android:id="@+id/iv_valve"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/margin8"
-    android:src="@drawable/ic_gt1"
+    android:src="@drawable/valve1_close"
     app:layout_constraintBottom_toTopOf="@+id/view_bottom"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/view_top" />
@@ -55,7 +70,7 @@
     android:layout_width="match_parent"
     android:layout_height="1dp"
     android:layout_marginBottom="@dimen/margin8"
-    android:background="@color/white"
+    android:background="@color/gray"
     app:layout_constraintBottom_toTopOf="@+id/btn_valve2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />

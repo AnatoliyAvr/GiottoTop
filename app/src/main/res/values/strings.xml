@@ -6,6 +6,10 @@
   <string name="valve1">Клапан1</string>
   <string name="valve2">Клапан2</string>
   <string name="valve3">Клапан3</string>
+  <string name="valveClose">Клапан закрыт</string>
+  <string name="valveOpen">Клапан открыт\n(подача воздуха через порт 1)</string>
+  <string name="valveTopSeatFlush">Промывка верхнего седла\n(подача воздуха через порт 2)</string>
+  <string name="valveLowerSeatFlush">Промывка нижнего седла\n(подача воздуха через порт 2)</string>
 
   <string-array name="mode">
     <item>АВТОМАТИЧЕСКИЙ РЕЖИМ</item>
@@ -16,4 +20,5 @@
     <item quantity="one">%d item</item>
     <item quantity="other">%d items</item>
   </plurals>
+
 </resources>
