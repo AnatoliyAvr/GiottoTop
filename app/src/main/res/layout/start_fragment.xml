@@ -18,13 +18,13 @@
     android:padding="10dp"
     android:textColor="@color/gray"
     android:textColorHint="@color/gray"
-
     android:textSize="18sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:spinner_arrow_gravity="end"
     app:spinner_arrow_padding="8dp"
+    app:spinner_arrow_tint="@color/gray"
     app:spinner_divider_color="@color/gray"
     app:spinner_divider_show="true"
     app:spinner_divider_size="0.4dp"
@@ -43,14 +43,13 @@
     app:layout_constraintTop_toBottomOf="@+id/spinner_mode" />
 
   <TextView
-    android:layout_marginStart="@dimen/margin8"
     android:id="@+id/tv_description"
-    android:layout_width="0dp"
-    android:layout_height="100dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:textAlignment="center"
-    android:textSize="12sp"
-    app:layout_constraintBottom_toTopOf="@+id/view_bottom"
-    app:layout_constraintEnd_toStartOf="@+id/iv_valve"
+    android:textSize="24sp"
+    app:layout_constraintBottom_toTopOf="@+id/iv_valve"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/view_top"
     tools:text="@string/valveOpen" />
@@ -59,11 +58,17 @@
     android:id="@+id/iv_valve"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/margin8"
+    android:layout_marginBottom="@dimen/margin32"
     android:src="@drawable/valve1_close"
     app:layout_constraintBottom_toTopOf="@+id/view_bottom"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/view_top" />
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <ImageView
+    android:id="@+id/iv_air1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_air" />
 
   <View
     android:id="@+id/view_bottom"

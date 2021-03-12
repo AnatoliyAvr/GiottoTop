@@ -1,11 +1,11 @@
 package by.tolikavr.plc4j.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import by.tolikavr.plc4j.R
 import by.tolikavr.plc4j.databinding.StartFragmentBinding
 import com.serotonin.modbus4j.ModbusFactory
-import com.serotonin.modbus4j.code.DataType
 import com.serotonin.modbus4j.ip.IpParameters
 import com.serotonin.modbus4j.locator.BaseLocator
 import com.skydoves.powerspinner.PowerSpinnerView
@@ -29,6 +28,7 @@ class StartFragment : Fragment() {
   private lateinit var btnValve2: Button
   private lateinit var btnValve3: Button
   private lateinit var description: TextView
+  private lateinit var ivValve: ImageView
 
   val ipParameters: IpParameters = IpParameters().apply {
     host = "192.168.122.85"
@@ -37,8 +37,8 @@ class StartFragment : Fragment() {
   val modbusFactory = ModbusFactory()
   val master = modbusFactory.createTcpMaster(ipParameters, true)
 
-//  val loc = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)
-  val loc = BaseLocator.coilStatus(1, 0 )
+  //  val loc = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)
+  val loc = BaseLocator.coilStatus(1, 0)
 
 
   override fun onCreateView(
@@ -52,6 +52,7 @@ class StartFragment : Fragment() {
     btnValve2 = view.findViewById(R.id.btn_valve2)
     btnValve3 = view.findViewById(R.id.btn_valve3)
     description = view.findViewById(R.id.tv_description)
+    ivValve = view.findViewById(R.id.iv_valve)
     return view
   }
 
@@ -78,10 +79,25 @@ class StartFragment : Fragment() {
         }
       }
     }
-    //mBinding.tvMode.setText(R.string.modeAuto)
 
-    description.setText(R.string.valveLowerSeatFlush)
+    btnValve1.setOnClickListener {
+      ivValve.setImageResource(R.drawable.valve2_open)
+      description.setText(R.string.valveOpen)
+    }
+
+    btnValve2.setOnClickListener {
+      ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
+      description.setText(R.string.valveTopSeatFlush)
+    }
+
+    btnValve3.setOnClickListener {
+      ivValve.setImageResource(R.drawable.valve4_lower_seat_flush)
+      description.setText(R.string.valveLowerSeatFlush)
+    }
+
+    //mBinding.tvMode.setText(R.string.modeAuto)
   }
+
 
   override fun onDestroy() {
     super.onDestroy()
