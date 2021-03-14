@@ -1,9 +1,7 @@
-package by.tolikavr.plc4j.ui
+package by.tolikavr.plc4j.ui.start
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.tolikavr.plc4j.R
 import by.tolikavr.plc4j.databinding.StartFragmentBinding
+import by.tolikavr.plc4j.utilits.APP_ACTIVITY
 import com.serotonin.modbus4j.ModbusFactory
 import com.serotonin.modbus4j.ip.IpParameters
 import com.serotonin.modbus4j.locator.BaseLocator
-import com.skydoves.powerspinner.PowerSpinnerView
 
 
 class StartFragment : Fragment() {
@@ -23,14 +21,18 @@ class StartFragment : Fragment() {
   private var _binding: StartFragmentBinding? = null
   private val mBinding get() = _binding!!
   private lateinit var viewModel: StartViewModel
-  private lateinit var powerSpinnerView: PowerSpinnerView
+
+  //  private lateinit var powerSpinnerView: PowerSpinnerView
   private lateinit var btnValve1: Button
   private lateinit var btnValve2: Button
   private lateinit var btnValve3: Button
+  private lateinit var ivAir1: ImageView
+  private lateinit var ivAir2: ImageView
+  private lateinit var ivAir3: ImageView
   private lateinit var description: TextView
   private lateinit var ivValve: ImageView
 
-  val ipParameters: IpParameters = IpParameters().apply {
+  private val ipParameters: IpParameters = IpParameters().apply {
     host = "192.168.122.85"
     port = 502
   }
@@ -47,12 +49,16 @@ class StartFragment : Fragment() {
   ): View {
     _binding = StartFragmentBinding.inflate(layoutInflater, container, false)
     val view = mBinding.root
-    powerSpinnerView = view.findViewById(R.id.spinner_mode)
+//    powerSpinnerView = view.findViewById(R.id.spinner_mode)
     btnValve1 = view.findViewById(R.id.btn_valve1)
     btnValve2 = view.findViewById(R.id.btn_valve2)
     btnValve3 = view.findViewById(R.id.btn_valve3)
+    ivAir1 = view.findViewById(R.id.iv_air1)
+    ivAir2 = view.findViewById(R.id.iv_air2)
+    ivAir3 = view.findViewById(R.id.iv_air3)
     description = view.findViewById(R.id.tv_description)
     ivValve = view.findViewById(R.id.iv_valve)
+
     return view
   }
 
@@ -60,44 +66,69 @@ class StartFragment : Fragment() {
     super.onActivityCreated(savedInstanceState)
     viewModel = ViewModelProvider(this).get(StartViewModel::class.java)
 
+    setHasOptionsMenu(true)
+    APP_ACTIVITY.setTitle(R.string.modeAuto)
+
 //    val connection = Connection
+
 
 //    Log.d("AAA", connection.master.getValue(connection.loc).toString())
 //    Log.d("AAA", master.getValue(loc).toString())
 
-    powerSpinnerView.setOnSpinnerDismissListener {
-      when (powerSpinnerView.selectedIndex) {
-        0 -> {
-          btnValve1.isVisible = false
-          btnValve2.setText(R.string.start)
-          btnValve3.isVisible = false
-        }
-        1 -> {
-          btnValve1.isVisible = true
-          btnValve2.setText(R.string.valve2)
-          btnValve3.isVisible = true
-        }
-      }
-    }
+//    powerSpinnerView.setOnSpinnerDismissListener {
+//      when (powerSpinnerView.selectedIndex) {
+//        0 -> {
+//          btnValve1.isVisible = false
+//          btnValve2.setText(R.string.start)
+//          btnValve3.isVisible = false
+//        }
+//        1 -> {
+//          btnValve1.isVisible = true
+//          btnValve2.setText(R.string.valve2)
+//          btnValve3.isVisible = true
+//        }
+//      }
+//    }
 
     btnValve1.setOnClickListener {
       ivValve.setImageResource(R.drawable.valve2_open)
       description.setText(R.string.valveOpen)
+      ivAir1.isVisible = true
+      ivAir2.isVisible = false
+      ivAir3.isVisible = false
     }
 
     btnValve2.setOnClickListener {
       ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
       description.setText(R.string.valveTopSeatFlush)
+      ivAir2.isVisible = true
+      ivAir1.isVisible = false
+      ivAir3.isVisible = false
     }
 
     btnValve3.setOnClickListener {
       ivValve.setImageResource(R.drawable.valve4_lower_seat_flush)
       description.setText(R.string.valveLowerSeatFlush)
+      ivAir3.isVisible = true
+      ivAir1.isVisible = false
+      ivAir2.isVisible = false
     }
-
     //mBinding.tvMode.setText(R.string.modeAuto)
   }
 
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    super.onCreateOptionsMenu(menu, inflater)
+    inflater.inflate(R.menu.setting, menu)
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+      R.id.btn_settings -> {
+        APP_ACTIVITY.navController.navigate(R.id.action_startFragment_to_settingsFragment)
+      }
+    }
+    return super.onOptionsItemSelected(item)
+  }
 
   override fun onDestroy() {
     super.onDestroy()

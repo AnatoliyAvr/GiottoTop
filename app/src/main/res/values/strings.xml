@@ -1,7 +1,8 @@
 <resources>
-  <string name="app_name">PLC4J</string>
+  <string name="app_name">GiottoTop</string>
   <string name="modeAuto">АВТОМАТЧЕСКИЙ РЕЖИМ</string>
   <string name="modeManual">РУЧНОЙ РЕЖИМ</string>
+  <string name="settings">НАСТРОЙКИ</string>
   <string name="start">Пуск</string>
   <string name="valve1">Клапан1</string>
   <string name="valve2">Клапан2</string>
@@ -10,6 +11,10 @@
   <string name="valveOpen">Клапан открыт\n(подача воздуха через порт 1)</string>
   <string name="valveTopSeatFlush">Промывка верхнего седла\n(подача воздуха через порт 2)</string>
   <string name="valveLowerSeatFlush">Промывка нижнего седла\n(подача воздуха через порт 2)</string>
+  <string name="ip">IP</string>
+  <string name="port">PORT</string>
+  <string name="ip_address">127.0.0.1</string>
+  <string name="port_number">502</string>
 
   <string-array name="mode">
     <item>АВТОМАТИЧЕСКИЙ РЕЖИМ</item>

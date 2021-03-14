@@ -1,4 +1,4 @@
-package by.tolikavr.plc4j.ui
+package by.tolikavr.plc4j.ui.start
 
 import androidx.lifecycle.ViewModel
 

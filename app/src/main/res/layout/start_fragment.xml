@@ -5,42 +5,41 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@color/background"
-  tools:context=".ui.StartFragment">
+  tools:context=".ui.start.StartFragment">
 
-
-  <com.skydoves.powerspinner.PowerSpinnerView
-    android:id="@+id/spinner_mode"
-    android:layout_width="match_parent"
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/left_guideline"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/background"
-    android:gravity="center"
-    android:hint="@string/modeAuto"
-    android:padding="10dp"
-    android:textColor="@color/gray"
-    android:textColorHint="@color/gray"
-    android:textSize="18sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:spinner_arrow_gravity="end"
-    app:spinner_arrow_padding="8dp"
-    app:spinner_arrow_tint="@color/gray"
-    app:spinner_divider_color="@color/gray"
-    app:spinner_divider_show="true"
-    app:spinner_divider_size="0.4dp"
-    app:spinner_item_array="@array/mode"
-    app:spinner_popup_animation="dropdown"
-    app:spinner_popup_background="@color/background"
-    app:spinner_popup_elevation="14dp" />
+    android:orientation="vertical"
+    app:layout_constraintGuide_percent="0.64" />
 
-  <View
-    android:id="@+id/view_top"
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/gray"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/spinner_mode" />
+
+  <!--  <com.skydoves.powerspinner.PowerSpinnerView-->
+  <!--    android:id="@+id/spinner_mode"-->
+  <!--    android:layout_width="match_parent"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:background="@color/background"-->
+  <!--    android:gravity="center"-->
+  <!--    android:hint="@string/modeAuto"-->
+  <!--    android:padding="10dp"-->
+  <!--    android:textColor="@color/gray"-->
+  <!--    android:textColorHint="@color/gray"-->
+  <!--    android:textSize="18sp"-->
+  <!--    app:layout_constraintEnd_toEndOf="parent"-->
+  <!--    app:layout_constraintStart_toStartOf="parent"-->
+  <!--    app:layout_constraintTop_toTopOf="parent"-->
+  <!--    app:spinner_arrow_gravity="end"-->
+  <!--    app:spinner_arrow_padding="8dp"-->
+  <!--    app:spinner_arrow_tint="@color/gray"-->
+  <!--    app:spinner_divider_color="@color/gray"-->
+  <!--    app:spinner_divider_show="true"-->
+  <!--    app:spinner_divider_size="0.4dp"-->
+  <!--    app:spinner_item_array="@array/mode"-->
+  <!--    app:spinner_popup_animation="dropdown"-->
+  <!--    app:spinner_popup_background="@color/background"-->
+  <!--    app:spinner_popup_elevation="14dp" />-->
+
 
   <TextView
     android:id="@+id/tv_description"
@@ -51,7 +50,7 @@
     app:layout_constraintBottom_toTopOf="@+id/iv_valve"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/view_top"
+    app:layout_constraintTop_toTopOf="parent"
     tools:text="@string/valveOpen" />
 
   <ImageView
@@ -64,11 +63,39 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
 
+
   <ImageView
     android:id="@+id/iv_air1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:src="@drawable/ic_air" />
+    android:src="@drawable/ic_air"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+    app:layout_constraintTop_toTopOf="@+id/iv_valve"
+    app:layout_constraintVertical_bias="0.205" />
+
+  <ImageView
+    android:id="@+id/iv_air2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_air"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+    app:layout_constraintTop_toTopOf="@+id/iv_valve"
+    app:layout_constraintVertical_bias="0.386" />
+
+  <ImageView
+    android:id="@+id/iv_air3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_air"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+    app:layout_constraintTop_toTopOf="@+id/iv_valve"
+    app:layout_constraintVertical_bias="0.427" />
 
   <View
     android:id="@+id/view_bottom"
