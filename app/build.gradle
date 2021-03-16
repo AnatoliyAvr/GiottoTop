@@ -52,7 +52,7 @@ dependencies {
 
   implementation 'com.infiniteautomation:modbus4j:3.0.3'
 
-  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2-native-mt'
 
   implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
   implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0"

@@ -1,8 +1,7 @@
 package by.tolikavr.plc4j
 
 class Temp {
-/*
-  lateinit var tvText: TextView
+/*  lateinit var tvText: TextView
   lateinit var edText: EditText
   lateinit var btn: Button
 

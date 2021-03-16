@@ -1,6 +1,7 @@
 package by.tolikavr.plc4j.ui.start
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -10,10 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.tolikavr.plc4j.R
 import by.tolikavr.plc4j.databinding.StartFragmentBinding
+import by.tolikavr.plc4j.modbus.Connection
 import by.tolikavr.plc4j.utilits.APP_ACTIVITY
-import com.serotonin.modbus4j.ModbusFactory
-import com.serotonin.modbus4j.ip.IpParameters
-import com.serotonin.modbus4j.locator.BaseLocator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class StartFragment : Fragment() {
@@ -32,16 +35,7 @@ class StartFragment : Fragment() {
   private lateinit var description: TextView
   private lateinit var ivValve: ImageView
 
-  private val ipParameters: IpParameters = IpParameters().apply {
-    host = "192.168.122.85"
-    port = 502
-  }
-  val modbusFactory = ModbusFactory()
-  val master = modbusFactory.createTcpMaster(ipParameters, true)
-
-  //  val loc = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)
-  val loc = BaseLocator.coilStatus(1, 0)
-
+  private lateinit var connection: Connection
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -68,12 +62,17 @@ class StartFragment : Fragment() {
 
     setHasOptionsMenu(true)
     APP_ACTIVITY.setTitle(R.string.modeAuto)
+    initialization()
 
-//    val connection = Connection
+    GlobalScope.launch(Dispatchers.IO) {
+      connection.initialization()
+      while (true){
 
+        Log.d("AAA", connection.getMaster().getValue(connection.loc).toString())
+        delay(500)
+      }
+    }
 
-//    Log.d("AAA", connection.master.getValue(connection.loc).toString())
-//    Log.d("AAA", master.getValue(loc).toString())
 
 //    powerSpinnerView.setOnSpinnerDismissListener {
 //      when (powerSpinnerView.selectedIndex) {
@@ -128,6 +127,10 @@ class StartFragment : Fragment() {
       }
     }
     return super.onOptionsItemSelected(item)
+  }
+
+  private fun initialization() {
+    connection = Connection
   }
 
   override fun onDestroy() {
