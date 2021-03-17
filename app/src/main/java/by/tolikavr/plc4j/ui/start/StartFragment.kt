@@ -1,5 +1,7 @@
 package by.tolikavr.plc4j.ui.start
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -13,11 +15,13 @@ import by.tolikavr.plc4j.R
 import by.tolikavr.plc4j.databinding.StartFragmentBinding
 import by.tolikavr.plc4j.modbus.Connection
 import by.tolikavr.plc4j.utilits.APP_ACTIVITY
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import by.tolikavr.plc4j.utilits.AppPreference
+import com.serotonin.modbus4j.exception.ModbusInitException
+import kotlinx.coroutines.*
 
+
+const val TIME5 = "time5"
+const val TIME1 = "time1"
 
 class StartFragment : Fragment() {
 
@@ -25,7 +29,6 @@ class StartFragment : Fragment() {
   private val mBinding get() = _binding!!
   private lateinit var viewModel: StartViewModel
 
-  //  private lateinit var powerSpinnerView: PowerSpinnerView
   private lateinit var btnValve1: Button
   private lateinit var btnValve2: Button
   private lateinit var btnValve3: Button
@@ -34,8 +37,10 @@ class StartFragment : Fragment() {
   private lateinit var ivAir3: ImageView
   private lateinit var description: TextView
   private lateinit var ivValve: ImageView
-
   private lateinit var connection: Connection
+  private lateinit var job: Job
+  private var setTime5 = 0
+  private var setTime1 = 0
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +48,6 @@ class StartFragment : Fragment() {
   ): View {
     _binding = StartFragmentBinding.inflate(layoutInflater, container, false)
     val view = mBinding.root
-//    powerSpinnerView = view.findViewById(R.id.spinner_mode)
     btnValve1 = view.findViewById(R.id.btn_valve1)
     btnValve2 = view.findViewById(R.id.btn_valve2)
     btnValve3 = view.findViewById(R.id.btn_valve3)
@@ -52,67 +56,134 @@ class StartFragment : Fragment() {
     ivAir3 = view.findViewById(R.id.iv_air3)
     description = view.findViewById(R.id.tv_description)
     ivValve = view.findViewById(R.id.iv_valve)
-
     return view
   }
 
+  @SuppressLint("ResourceAsColor")
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     super.onActivityCreated(savedInstanceState)
     viewModel = ViewModelProvider(this).get(StartViewModel::class.java)
-
     setHasOptionsMenu(true)
-    APP_ACTIVITY.setTitle(R.string.modeAuto)
     initialization()
 
-    GlobalScope.launch(Dispatchers.IO) {
-      connection.initialization()
-      while (true){
+    Log.d("AAA", "${AppPreference.getIp()} - ${AppPreference.getPort()}")
+    Log.d("AAA", "${arguments?.getString(TIME5)} - ${arguments?.getString(TIME1)}")
 
-        Log.d("AAA", connection.getMaster().getValue(connection.loc).toString())
-        delay(500)
+    job = GlobalScope.launch(Dispatchers.IO) {
+      var init = true
+      while (true) {
+        delay(200)
+        when {
+          init -> {
+            try {
+              withContext(Dispatchers.Main) {
+                btnValve1.visibility = View.GONE
+                btnValve2.visibility = View.INVISIBLE
+                btnValve3.visibility = View.GONE
+                APP_ACTIVITY.setTitle(R.string.connecting)
+              }
+              connection.initialization(setHost = AppPreference.getIp(), setPort = AppPreference.getPort())
+
+              description.setTextColor(R.color.gray_dark)
+              description.setText(R.string.valveClose)
+            } catch (e: ModbusInitException) {
+              withContext(Dispatchers.Main) {
+                APP_ACTIVITY.setTitle(R.string.error_connection)
+              }
+              Log.d("AAA", e.printStackTrace().toString())
+            }
+            init = false
+          }
+          connection.getMaster().testSlaveNode(1) -> {
+
+            val mode = when {
+              connection.getMaster().getValue(connection.modeAuto) -> "Auto"
+              connection.getMaster().getValue(connection.modeOff) -> "Off"
+              connection.getMaster().getValue(connection.modeManual) -> "Manual"
+              else -> ""
+            }
+
+            withContext(Dispatchers.Main) {
+              when (mode) {
+                "Auto" -> {
+                  APP_ACTIVITY.setTitle(R.string.modeAuto)
+                  btnValve1.visibility = View.GONE
+                  btnValve2.visibility = View.VISIBLE
+                  btnValve2.setText(R.string.start)
+                  btnValve3.visibility = View.GONE
+                }
+                "Off" -> {
+                  APP_ACTIVITY.setTitle(R.string.modeOff)
+                  btnValve1.visibility = View.GONE
+                  btnValve2.visibility = View.INVISIBLE
+                  btnValve3.visibility = View.GONE
+                }
+                "Manual" -> {
+                  APP_ACTIVITY.setTitle(R.string.modeManual)
+                  btnValve1.visibility = View.VISIBLE
+                  btnValve2.visibility = View.VISIBLE
+                  btnValve2.setText(R.string.valve2)
+                  btnValve3.visibility = View.VISIBLE
+                }
+              }
+            }
+            //        Log.d("AAA", connection.getMaster().getValue(connection.start).toString())
+            //        Log.d("AAA", connection.getMaster().getValue(connection.valve1).toString())
+            //        Log.d("AAA", connection.getMaster().getValue(connection.valve2).toString())
+            //        Log.d("AAA", connection.getMaster().getValue(connection.valve3).toString())
+            //
+            //        Log.d("AAA", connection.getMaster().getValue(connection.open).toString())
+            //        Log.d("AAA", connection.getMaster().getValue(connection.close).toString())
+            //
+            Log.d("AAA", connection.getMaster().getValue(connection.modeAuto).toString())
+            Log.d("AAA", connection.getMaster().getValue(connection.modeOff).toString())
+            Log.d("AAA", connection.getMaster().getValue(connection.modeManual).toString())
+            //
+            Log.d("AAA", connection.getMaster().getValue(connection.setTime5).toString())
+            Log.d("AAA", connection.getMaster().getValue(connection.setTime1).toString())
+
+
+//            setTime5 = connection.getMaster().getValue(connection.setTime5).toInt()
+//            setTime1 = connection.getMaster().getValue(connection.setTime1).toInt()
+
+            setTime5 = 5
+            setTime1 = 1
+          }
+          else -> {
+            withContext(Dispatchers.IO) {
+              description.setTextColor(Color.RED)
+              description.setText(R.string.no_connection)
+            }
+            init = true
+          }
+        }
+
       }
     }
-
-
-//    powerSpinnerView.setOnSpinnerDismissListener {
-//      when (powerSpinnerView.selectedIndex) {
-//        0 -> {
-//          btnValve1.isVisible = false
-//          btnValve2.setText(R.string.start)
-//          btnValve3.isVisible = false
-//        }
-//        1 -> {
-//          btnValve1.isVisible = true
-//          btnValve2.setText(R.string.valve2)
-//          btnValve3.isVisible = true
-//        }
-//      }
-//    }
 
     btnValve1.setOnClickListener {
       ivValve.setImageResource(R.drawable.valve2_open)
       description.setText(R.string.valveOpen)
-      ivAir1.isVisible = true
-      ivAir2.isVisible = false
+      ivAir1.isVisible = false
+      ivAir2.isVisible = true
       ivAir3.isVisible = false
     }
 
     btnValve2.setOnClickListener {
       ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
       description.setText(R.string.valveTopSeatFlush)
-      ivAir2.isVisible = true
       ivAir1.isVisible = false
-      ivAir3.isVisible = false
+      ivAir2.isVisible = false
+      ivAir3.isVisible = true
     }
 
     btnValve3.setOnClickListener {
       ivValve.setImageResource(R.drawable.valve4_lower_seat_flush)
       description.setText(R.string.valveLowerSeatFlush)
-      ivAir3.isVisible = true
-      ivAir1.isVisible = false
+      ivAir1.isVisible = true
       ivAir2.isVisible = false
+      ivAir3.isVisible = false
     }
-    //mBinding.tvMode.setText(R.string.modeAuto)
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -123,7 +194,10 @@ class StartFragment : Fragment() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
       R.id.btn_settings -> {
-        APP_ACTIVITY.navController.navigate(R.id.action_startFragment_to_settingsFragment)
+        val bundle = Bundle()
+        bundle.putInt(TIME5, setTime5)
+        bundle.putInt(TIME1, setTime1)
+        APP_ACTIVITY.navController.navigate(R.id.action_startFragment_to_settingsFragment, bundle)
       }
     }
     return super.onOptionsItemSelected(item)
@@ -131,6 +205,11 @@ class StartFragment : Fragment() {
 
   private fun initialization() {
     connection = Connection
+  }
+
+  override fun onStop() {
+    super.onStop()
+    job.cancel()
   }
 
   override fun onDestroy() {

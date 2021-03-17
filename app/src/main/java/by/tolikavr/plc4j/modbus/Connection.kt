@@ -10,19 +10,31 @@ object Connection {
 
   private lateinit var master: TcpMaster
 
-  fun initialization() {
+  fun initialization(setHost: String? = "192.168.122.85", setPort: Int = 502) {
     val ipParameters: IpParameters = IpParameters().apply {
-      host = "192.168.122.85"
-      port = 502
+      host = setHost
+      port = setPort
     }
-    val modbusFactory: ModbusFactory = ModbusFactory()
+    val modbusFactory = ModbusFactory()
     master = modbusFactory.createTcpMaster(ipParameters, true) as TcpMaster
     master.init()
   }
 
   fun getMaster() = master
 
+  val start = BaseLocator.coilStatus(1, 0)
+  val valve1 = BaseLocator.coilStatus(1, 1)
+  val valve2 = BaseLocator.coilStatus(1, 2)
+  val valve3 = BaseLocator.coilStatus(1, 3)
 
-  val loc = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)
-  val loc1 = BaseLocator.holdingRegister(1, 1, DataType.TWO_BYTE_INT_UNSIGNED)
+  val open = BaseLocator.coilStatus(1, 4)
+  val close = BaseLocator.coilStatus(1, 5)
+
+  val modeAuto = BaseLocator.coilStatus(1, 0)
+  val modeOff = BaseLocator.coilStatus(1, 1)
+  val modeManual = BaseLocator.coilStatus(1, 2)
+
+  val setTime5 = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)
+  val setTime1 = BaseLocator.holdingRegister(1, 2, DataType.TWO_BYTE_INT_UNSIGNED)
+
 }

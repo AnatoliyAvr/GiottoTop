@@ -1,24 +1,31 @@
 <resources>
   <string name="app_name">GiottoTop</string>
   <string name="modeAuto">АВТОМАТЧЕСКИЙ РЕЖИМ</string>
+  <string name="modeOff">ОТКЛЮЧЕН</string>
   <string name="modeManual">РУЧНОЙ РЕЖИМ</string>
   <string name="settings">НАСТРОЙКИ</string>
+  <string name="connecting">СОЕДИНЕНИЕ…</string>
+  <string name="error_connection">ОШИБКА</string>
   <string name="start">Пуск</string>
-  <string name="valve1">Клапан1</string>
-  <string name="valve2">Клапан2</string>
-  <string name="valve3">Клапан3</string>
+  <string name="valve1">Открыть клапан</string>
+  <string name="valve2">Промывка верхнего\nседла</string>
+  <string name="valve3">Промывка нижнего\nседла</string>
   <string name="valveClose">Клапан закрыт</string>
-  <string name="valveOpen">Клапан открыт\n(подача воздуха через порт 1)</string>
-  <string name="valveTopSeatFlush">Промывка верхнего седла\n(подача воздуха через порт 2)</string>
-  <string name="valveLowerSeatFlush">Промывка нижнего седла\n(подача воздуха через порт 3)</string>
+  <string name="valveOpen">Клапан открыт</string>
+  <string name="valveTopSeatFlush">Промывка верхнего седла</string>
+  <string name="valveLowerSeatFlush">Промывка нижнего седла</string>
   <string name="ip">IP</string>
   <string name="port">PORT</string>
   <string name="ip_address">127.0.0.1</string>
   <string name="port_number">502</string>
+  <string name="no_connection">НЕТ СВЯЗИ С КОНТРОЛЛЕРОМ</string>
+  <string name="text_timer5">Таймер открытия\nклапана сек.</string>
+  <string name="text_timer1">Таймер простоя сек.</string>
 
   <string-array name="mode">
     <item>АВТОМАТИЧЕСКИЙ РЕЖИМ</item>
     <item>РУЧНОЙ РЕЖИМ</item>
+    <item>ОТКЛЮЧЕН</item>
   </string-array>
 
   <plurals name="number_of_items">

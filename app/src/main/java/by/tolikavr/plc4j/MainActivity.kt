@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     navController = Navigation.findNavController(this, R.id.nav_host_fragment)
     toolbar = mBinding.toolbar
     setSupportActionBar(toolbar)
-
+    AppPreference.getPreference(APP_ACTIVITY)
   }
 
   override fun onDestroy() {
