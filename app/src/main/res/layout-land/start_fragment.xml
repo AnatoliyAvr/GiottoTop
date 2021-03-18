@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/background"
+  tools:context=".ui.start.StartFragment">
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/left_guideline"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_percent="0.85" />
+
+
+  <TextView
+    android:id="@+id/tv_description"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin8"
+    android:layout_marginTop="@dimen/margin80"
+    android:layout_marginEnd="@dimen/margin8"
+    android:textAlignment="center"
+    app:layout_constraintEnd_toStartOf="@+id/iv_valve"
+    android:textColor="@color/gray_dark"
+    android:textSize="24sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="@string/valveOpen" />
+
+  <ImageView
+    android:id="@+id/iv_valve"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_marginTop="@dimen/margin8"
+    android:layout_marginEnd="@dimen/margin64"
+    android:layout_marginBottom="@dimen/margin8"
+    android:src="@drawable/valve1_close"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+  <ImageView
+    android:id="@+id/iv_air1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_air"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+    app:layout_constraintTop_toTopOf="@+id/iv_valve"
+    app:layout_constraintVertical_bias="0.205" />
+
+  <ImageView
+    android:id="@+id/iv_air2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_air"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+    app:layout_constraintTop_toTopOf="@+id/iv_valve"
+    app:layout_constraintVertical_bias="0.386" />
+
+  <ImageView
+    android:id="@+id/iv_air3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_air"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@+id/view_bottom"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline"
+    app:layout_constraintTop_toTopOf="@+id/iv_valve"
+    app:layout_constraintVertical_bias="0.427" />
+
+  <View
+    android:id="@+id/view_bottom"
+    android:layout_width="0dp"
+    android:layout_height="1dp"
+    android:layout_marginBottom="@dimen/margin8"
+    android:background="@color/gray"
+    app:layout_constraintBottom_toTopOf="@+id/btn_valve2"
+    app:layout_constraintEnd_toStartOf="@+id/iv_valve"
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <Button
+    android:id="@+id/btn_valve1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin8"
+    android:text="@string/valve1"
+    android:textAllCaps="false"
+    android:textSize="12sp"
+    android:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/btn_valve2"
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <Button
+    android:id="@+id/btn_valve2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin8"
+    android:text="@string/valve2"
+    android:textAllCaps="false"
+    android:textSize="11sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/btn_valve3"
+    app:layout_constraintStart_toEndOf="@+id/btn_valve1" />
+
+  <Button
+    android:id="@+id/btn_valve3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin8"
+    android:text="@string/valve3"
+    android:textAllCaps="false"
+    android:textSize="11sp"
+    android:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/iv_valve"
+    app:layout_constraintStart_toEndOf="@id/btn_valve2" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

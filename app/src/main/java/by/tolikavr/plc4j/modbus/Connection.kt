@@ -22,19 +22,18 @@ object Connection {
 
   fun getMaster() = master
 
-  val start = BaseLocator.coilStatus(1, 0)
-  val valve1 = BaseLocator.coilStatus(1, 1)
-  val valve2 = BaseLocator.coilStatus(1, 2)
-  val valve3 = BaseLocator.coilStatus(1, 3)
+  val start = BaseLocator.coilStatus(1, 0)!!
+  val valve1 = BaseLocator.coilStatus(1, 1)!!
+  val valve2 = BaseLocator.coilStatus(1, 2)!!
+  val valve3 = BaseLocator.coilStatus(1, 3)!!
 
-  val open = BaseLocator.coilStatus(1, 4)
-  val close = BaseLocator.coilStatus(1, 5)
+  val open = BaseLocator.coilStatus(1, 4)!!
+  val close = BaseLocator.coilStatus(1, 5)!!
 
-  val modeAuto = BaseLocator.coilStatus(1, 0)
-  val modeOff = BaseLocator.coilStatus(1, 1)
-  val modeManual = BaseLocator.coilStatus(1, 2)
+  val modeAuto = BaseLocator.coilStatus(1, 6)!!
+  val modeOff = BaseLocator.coilStatus(1, 7)!!
+  val modeManual = BaseLocator.coilStatus(1, 8)!!
 
-  val setTime5 = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)
-  val setTime1 = BaseLocator.holdingRegister(1, 2, DataType.TWO_BYTE_INT_UNSIGNED)
-
+  val setTime5 = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)!!
+  val setTime1 = BaseLocator.holdingRegister(1, 2, DataType.TWO_BYTE_INT_UNSIGNED)!!
 }

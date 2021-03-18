@@ -3,9 +3,13 @@
   <string name="modeAuto">АВТОМАТЧЕСКИЙ РЕЖИМ</string>
   <string name="modeOff">ОТКЛЮЧЕН</string>
   <string name="modeManual">РУЧНОЙ РЕЖИМ</string>
+  <string name="modeNotSet">РЕЖИМ НЕ УСТАНОВЛЕН</string>
   <string name="settings">НАСТРОЙКИ</string>
   <string name="connecting">СОЕДИНЕНИЕ…</string>
   <string name="error_connection">ОШИБКА</string>
+  <string name="error_illegal_function">НЕИЗВЕСТННАЯ ФУНКЦИЯ</string>
+  <string name="error_ip_port">Проверти ip и port подключения!</string>
+  <string name="error_sensor">Проверьте датчики открытия и закрытия</string>
   <string name="start">Пуск</string>
   <string name="valve1">Открыть клапан</string>
   <string name="valve2">Промывка верхнего\nседла</string>
