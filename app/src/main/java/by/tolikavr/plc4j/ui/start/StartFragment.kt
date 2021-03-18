@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.tolikavr.plc4j.R
@@ -101,69 +100,75 @@ class StartFragment : Fragment() {
             try {
               when {
                 connection.getMaster().getValue(connection.modeAuto) -> {
-                  descriptionText(R.string.modeAuto)
-                  btnValve1.visibility = View.GONE
-                  btnValve2.visibility = View.VISIBLE
-                  btnValve2.setText(R.string.start)
-                  btnValve3.visibility = View.GONE
+                  withContext(Dispatchers.Main) {
+                    APP_ACTIVITY.setTitle(R.string.modeAuto)
+                    btnValve1.visibility = View.GONE
+                    btnValve2.visibility = View.VISIBLE
+                    btnValve2.setText(R.string.start)
+                    btnValve3.visibility = View.GONE
+                  }
                 }
                 connection.getMaster().getValue(connection.modeOff) -> {
-                  descriptionText(R.string.modeOff)
-                  btnValve1.visibility = View.GONE
-                  btnValve2.visibility = View.INVISIBLE
-                  btnValve3.visibility = View.GONE
+                  withContext(Dispatchers.Main) {
+                    APP_ACTIVITY.setTitle(R.string.modeOff)
+                    btnValve1.visibility = View.GONE
+                    btnValve2.visibility = View.INVISIBLE
+                    btnValve3.visibility = View.GONE
+                  }
                 }
                 connection.getMaster().getValue(connection.modeManual) -> {
-
-                  //Ручной режим
-                  //valve1
-                  if (valve1) {
-                    connection.getMaster().setValue(connection.open, valve1)
-                    connection.getMaster().setValue(connection.close, !valve1)
-                  } else {
-                    connection.getMaster().setValue(connection.open, valve1)
-                    connection.getMaster().setValue(connection.close, !valve1)
+                  withContext(Dispatchers.Main) {
+                    APP_ACTIVITY.setTitle(R.string.modeManual)
+                    btnValve1.visibility = View.VISIBLE
+                    btnValve2.visibility = View.VISIBLE
+                    btnValve2.setText(R.string.valve2)
+                    btnValve3.visibility = View.VISIBLE
                   }
-
-                  if (connection.getMaster().getValue(connection.open) and !valve2 and !valve3) {
-                    ivValve.setImageResource(R.drawable.valve2_open)
-                    description.setText(R.string.valveOpen)
-                  } else if (connection.getMaster().getValue(connection.close) and !valve2 and !valve3) {
-                    ivValve.setImageResource(R.drawable.valve1_close)
-                    description.setText(R.string.valveClose)
-                  }
-
-                  //valve2
-                  if (connection.getMaster().getValue(connection.valve2) and !valve1 and !valve3) {
-                    ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
-                    description.setText(R.string.valveTopSeatFlush)
-                  } else if (!connection.getMaster().getValue(connection.valve2) and !valve1 and !valve3) {
-                    ivValve.setImageResource(R.drawable.valve1_close)
-                    description.setText(R.string.valveClose)
-                  }
-
-                  //valve3
-                  if (connection.getMaster().getValue(connection.valve3) and !valve1 and !valve2) {
-                    ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
-                    description.setText(R.string.valveLowerSeatFlush)
-                  } else if (!connection.getMaster().getValue(connection.valve3) and !valve1 and !valve2) {
-                    ivValve.setImageResource(R.drawable.valve1_close)
-                    description.setText(R.string.valveClose)
-                  }
-                  descriptionText(R.string.modeManual)
-                  btnValve1.visibility = View.VISIBLE
-                  btnValve2.visibility = View.VISIBLE
-                  btnValve2.setText(R.string.valve2)
-                  btnValve3.visibility = View.VISIBLE
-
                 }
                 else -> {
-                  descriptionText(R.string.modeNotSet)
-                  btnValve1.visibility = View.GONE
-                  btnValve2.visibility = View.INVISIBLE
-                  description.text = ""
-                  btnValve3.visibility = View.GONE
+                  withContext(Dispatchers.Main) {
+                    APP_ACTIVITY.setTitle(R.string.modeNotSet)
+                    btnValve1.visibility = View.GONE
+                    btnValve2.visibility = View.INVISIBLE
+                    description.text = ""
+                    btnValve3.visibility = View.GONE
+                  }
                 }
+
+              }
+              //valve1
+              if (valve1) {
+                connection.getMaster().setValue(connection.open, valve1)
+                connection.getMaster().setValue(connection.close, !valve1)
+              } else {
+                connection.getMaster().setValue(connection.open, valve1)
+                connection.getMaster().setValue(connection.close, !valve1)
+              }
+
+              if (connection.getMaster().getValue(connection.open) and !valve2 and !valve3) {
+                ivValve.setImageResource(R.drawable.valve2_open)
+                description.setText(R.string.valveOpen)
+              } else if (connection.getMaster().getValue(connection.close) and !valve2 and !valve3) {
+                ivValve.setImageResource(R.drawable.valve1_close)
+                description.setText(R.string.valveClose)
+              }
+
+              //valve2
+              if (connection.getMaster().getValue(connection.valve2) and !valve1 and !valve3) {
+                ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
+                description.setText(R.string.valveTopSeatFlush)
+              } else if (!connection.getMaster().getValue(connection.valve2) and !valve1 and !valve3) {
+                ivValve.setImageResource(R.drawable.valve1_close)
+                description.setText(R.string.valveClose)
+              }
+
+              //valve3
+              if (connection.getMaster().getValue(connection.valve3) and !valve1 and !valve2) {
+                ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
+                description.setText(R.string.valveLowerSeatFlush)
+              } else if (!connection.getMaster().getValue(connection.valve3) and !valve1 and !valve2) {
+                ivValve.setImageResource(R.drawable.valve1_close)
+                description.setText(R.string.valveClose)
               }
 
 
@@ -212,9 +217,9 @@ class StartFragment : Fragment() {
       GlobalScope.launch(Dispatchers.IO) {
         setValve(connection.valve1, valve1)
       }
-      ivAir1.isVisible = false
-      ivAir2.isVisible = valve1
-      ivAir3.isVisible = false
+//      ivAir1.isVisible = false
+//      ivAir2.isVisible = valve1
+//      ivAir3.isVisible = false
       btnValve1.isEnabled = true
       btnValve2.isEnabled = !valve1
       btnValve3.isEnabled = !valve1
@@ -223,12 +228,16 @@ class StartFragment : Fragment() {
     btnValve2.setOnClickListener {
       valve2 = !valve2
       GlobalScope.launch(Dispatchers.IO) {
-        setValve(connection.valve2, valve2)
+        // if (connection.getMaster().getValue(connection.modeAuto)){
+        setValve(connection.start, valve2)
+        // } else {
+        //  setValve(connection.valve2, valve2)
+        //}
       }
-      description.setText(R.string.valveTopSeatFlush)
-      ivAir1.isVisible = false
-      ivAir2.isVisible = false
-      ivAir3.isVisible = valve2
+//      description.setText(R.string.valveTopSeatFlush)
+//      ivAir1.isVisible = false
+//      ivAir2.isVisible = false
+//      ivAir3.isVisible = valve2
       btnValve1.isEnabled = !valve2
       btnValve2.isEnabled = true
       btnValve3.isEnabled = !valve2
@@ -239,10 +248,10 @@ class StartFragment : Fragment() {
       GlobalScope.launch(Dispatchers.IO) {
         setValve(connection.valve3, valve3)
       }
-      description.setText(R.string.valveLowerSeatFlush)
-      ivAir1.isVisible = valve3
-      ivAir2.isVisible = false
-      ivAir3.isVisible = false
+//      description.setText(R.string.valveLowerSeatFlush)
+//      ivAir1.isVisible = valve3
+//      ivAir2.isVisible = false
+//      ivAir3.isVisible = false
       btnValve1.isEnabled = !valve3
       btnValve2.isEnabled = !valve3
       btnValve3.isEnabled = true

@@ -10,7 +10,8 @@ object Connection {
 
   private lateinit var master: TcpMaster
 
-  fun initialization(setHost: String? = "192.168.122.85", setPort: Int = 502) {
+  fun initialization(setHost: String? = "192.168.1.10", setPort: Int = 502) {
+//  fun initialization(setHost: String? = "192.168.122.85", setPort: Int = 502) {
     val ipParameters: IpParameters = IpParameters().apply {
       host = setHost
       port = setPort
@@ -30,10 +31,10 @@ object Connection {
   val open = BaseLocator.coilStatus(1, 4)!!
   val close = BaseLocator.coilStatus(1, 5)!!
 
-  val modeAuto = BaseLocator.coilStatus(1, 6)!!
-  val modeOff = BaseLocator.coilStatus(1, 7)!!
-  val modeManual = BaseLocator.coilStatus(1, 8)!!
+  val modeAuto = BaseLocator.coilStatus(1, 8)!!
+  val modeOff = BaseLocator.coilStatus(1, 9)!!
+  val modeManual = BaseLocator.coilStatus(1, 10)!!
 
-  val setTime5 = BaseLocator.holdingRegister(1, 0, DataType.TWO_BYTE_INT_UNSIGNED)!!
+  val setTime5 = BaseLocator.holdingRegister(1, 1, DataType.TWO_BYTE_INT_UNSIGNED)!!
   val setTime1 = BaseLocator.holdingRegister(1, 2, DataType.TWO_BYTE_INT_UNSIGNED)!!
 }
