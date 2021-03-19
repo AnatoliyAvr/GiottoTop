@@ -1,5 +1,6 @@
 package by.tolikavr.plc4j.modbus
 
+import by.tolikavr.plc4j.model.MbValue
 import com.serotonin.modbus4j.ModbusFactory
 import com.serotonin.modbus4j.code.DataType
 import com.serotonin.modbus4j.ip.IpParameters
@@ -10,8 +11,8 @@ object Connection {
 
   private lateinit var master: TcpMaster
 
-  fun initialization(setHost: String? = "192.168.1.10", setPort: Int = 502) {
-//  fun initialization(setHost: String? = "192.168.122.85", setPort: Int = 502) {
+  //  fun initialization(setHost: String? = "192.168.1.10", setPort: Int = 502) {
+  fun initialization(setHost: String? = "192.168.122.85", setPort: Int = 502) {
     val ipParameters: IpParameters = IpParameters().apply {
       host = setHost
       port = setPort
@@ -37,4 +38,18 @@ object Connection {
 
   val setTime5 = BaseLocator.holdingRegister(1, 1, DataType.TWO_BYTE_INT_UNSIGNED)!!
   val setTime1 = BaseLocator.holdingRegister(1, 2, DataType.TWO_BYTE_INT_UNSIGNED)!!
+
+  fun initMB() {
+    MbValue.getStart = master.getValue(start)
+    MbValue.getValve1 = master.getValue(valve1)
+    MbValue.getValve2 = master.getValue(valve2)
+    MbValue.getValve3 = master.getValue(valve3)
+    MbValue.getOpen = master.getValue(open)
+    MbValue.getClose = master.getValue(close)
+    MbValue.getModeAuto = master.getValue(modeAuto)
+    MbValue.getModeOff = master.getValue(modeOff)
+    MbValue.getModeManual = master.getValue(modeManual)
+    MbValue.getSetTime5 = master.getValue(setTime5)
+    MbValue.getSetTime1 = master.getValue(setTime1)
+  }
 }

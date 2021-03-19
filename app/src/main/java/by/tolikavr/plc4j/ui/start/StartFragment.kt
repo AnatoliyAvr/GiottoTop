@@ -3,6 +3,8 @@ package by.tolikavr.plc4j.ui.start
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import android.widget.Button
@@ -10,11 +12,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.tolikavr.plc4j.R
 import by.tolikavr.plc4j.databinding.StartFragmentBinding
 import by.tolikavr.plc4j.modbus.Connection
+import by.tolikavr.plc4j.model.MbValue
 import by.tolikavr.plc4j.utilits.APP_ACTIVITY
 import by.tolikavr.plc4j.utilits.AppPreference
 import com.serotonin.modbus4j.exception.ErrorResponseException
@@ -30,6 +34,7 @@ const val TIME1 = "time1"
 @SuppressLint("ResourceAsColor")
 class StartFragment : Fragment() {
 
+  private val TAG = "AAA"
   private var _binding: StartFragmentBinding? = null
   private val mBinding get() = _binding!!
   private lateinit var viewModel: StartViewModel
@@ -46,10 +51,6 @@ class StartFragment : Fragment() {
   private lateinit var job: Job
   private var setTime5 = 0
   private var setTime1 = 0
-  private var start = false
-  private var valve1 = false
-  private var valve2 = false
-  private var valve3 = false
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -76,8 +77,9 @@ class StartFragment : Fragment() {
 
     job = GlobalScope.launch(Dispatchers.IO) {
       var init = true
+      var init1 = true
       while (true) {
-        delay(200)
+        delay(100)
         when {
           init -> {
             try {
@@ -91,24 +93,31 @@ class StartFragment : Fragment() {
               descriptionStatus(R.color.gray_dark, R.string.valveClose)
             } catch (e: ModbusInitException) {
               descriptionStatus(Color.RED, R.string.no_connection, R.string.error_connection, true)
-              Log.d("AAA", e.printStackTrace().toString())
+              Log.d(TAG, e.printStackTrace().toString())
               continue
             }
             init = false
           }
           connection.getMaster().testSlaveNode(1) -> {
             try {
+              connection.initMB()
+
               when {
-                connection.getMaster().getValue(connection.modeAuto) -> {
+                MbValue.getModeAuto -> {
                   withContext(Dispatchers.Main) {
                     APP_ACTIVITY.setTitle(R.string.modeAuto)
                     btnValve1.visibility = View.GONE
                     btnValve2.visibility = View.VISIBLE
                     btnValve2.setText(R.string.start)
                     btnValve3.visibility = View.GONE
+
+                    ivAir1.isVisible = MbValue.getValve3
+                    ivAir2.isVisible = MbValue.getValve1
+                    ivAir3.isVisible = MbValue.getValve2
                   }
+                  autoMde()
                 }
-                connection.getMaster().getValue(connection.modeOff) -> {
+                MbValue.getModeOff -> {
                   withContext(Dispatchers.Main) {
                     APP_ACTIVITY.setTitle(R.string.modeOff)
                     btnValve1.visibility = View.GONE
@@ -116,14 +125,20 @@ class StartFragment : Fragment() {
                     btnValve3.visibility = View.GONE
                   }
                 }
-                connection.getMaster().getValue(connection.modeManual) -> {
+                MbValue.getModeManual -> {
                   withContext(Dispatchers.Main) {
                     APP_ACTIVITY.setTitle(R.string.modeManual)
                     btnValve1.visibility = View.VISIBLE
                     btnValve2.visibility = View.VISIBLE
                     btnValve2.setText(R.string.valve2)
                     btnValve3.visibility = View.VISIBLE
+
+                    ivAir1.isVisible = MbValue.getValve3
+                    ivAir2.isVisible = MbValue.getValve1
+                    ivAir3.isVisible = MbValue.getValve2
                   }
+
+                  manualMde()
                 }
                 else -> {
                   withContext(Dispatchers.Main) {
@@ -136,69 +151,39 @@ class StartFragment : Fragment() {
                 }
 
               }
-              //valve1
-              if (valve1) {
-                connection.getMaster().setValue(connection.open, valve1)
-                connection.getMaster().setValue(connection.close, !valve1)
-              } else {
-                connection.getMaster().setValue(connection.open, valve1)
-                connection.getMaster().setValue(connection.close, !valve1)
-              }
-
-              if (connection.getMaster().getValue(connection.open) and !valve2 and !valve3) {
-                ivValve.setImageResource(R.drawable.valve2_open)
-                description.setText(R.string.valveOpen)
-              } else if (connection.getMaster().getValue(connection.close) and !valve2 and !valve3) {
-                ivValve.setImageResource(R.drawable.valve1_close)
-                description.setText(R.string.valveClose)
-              }
-
-              //valve2
-              if (connection.getMaster().getValue(connection.valve2) and !valve1 and !valve3) {
-                ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
-                description.setText(R.string.valveTopSeatFlush)
-              } else if (!connection.getMaster().getValue(connection.valve2) and !valve1 and !valve3) {
-                ivValve.setImageResource(R.drawable.valve1_close)
-                description.setText(R.string.valveClose)
-              }
-
-              //valve3
-              if (connection.getMaster().getValue(connection.valve3) and !valve1 and !valve2) {
-                ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
-                description.setText(R.string.valveLowerSeatFlush)
-              } else if (!connection.getMaster().getValue(connection.valve3) and !valve1 and !valve2) {
-                ivValve.setImageResource(R.drawable.valve1_close)
-                description.setText(R.string.valveClose)
-              }
-
-
             } catch (e: ErrorResponseException) {
               descriptionStatus(Color.RED, R.string.error_ip_port, R.string.error_illegal_function, true)
-              Log.d("AAA", e.printStackTrace().toString())
+              Log.d(TAG, e.printStackTrace().toString())
+              init1 = true
               continue
             } catch (e: ModbusTransportException) {
               descriptionStatus(Color.RED, R.string.no_connection, R.string.error_connection, true)
-              Log.d("AAA", e.printStackTrace().toString())
+              Log.d(TAG, e.printStackTrace().toString())
+              init1 = true
               continue
             }
 
-            //Log.d("AAA", modBus.start.toString())
-            //Log.d("AAA", modBus.valve1.toString())
-            //Log.d("AAA", modBus.valve2.toString())
-            //Log.d("AAA", modBus.valve3.toString())
-            //Log.d("AAA", modBus.open.toString())
-            //Log.d("AAA", modBus.close.toString())
-
-//            Log.d("AAA", modBus.modeAuto.toString())
-//            Log.d("AAA", modBus.modeOff.toString())
-//            Log.d("AAA", modBus.modeManual.toString())
-
-            //Log.d("AAA", modBus.setTime5.toString())
-            //Log.d("AAA", modBus.setTime1.toString())
-
-            //setTime5 = modBus.setTime5.toInt()
-            //setTime1 = modBus.setTime1.toInt()
-
+            if (init1) {
+              description.setTextColor(R.color.gray_dark)
+              withContext(Dispatchers.Main) {
+                if (MbValue.getValve1) {
+                  btnValve1.isEnabled = true
+                  btnValve2.isEnabled = false
+                  btnValve3.isEnabled = false
+                }
+                if (MbValue.getValve2) {
+                  btnValve1.isEnabled = false
+                  btnValve2.isEnabled = true
+                  btnValve3.isEnabled = false
+                }
+                if (MbValue.getValve3) {
+                  btnValve1.isEnabled = false
+                  btnValve2.isEnabled = false
+                  btnValve3.isEnabled = true
+                }
+              }
+              init1 = false
+            }
             setTime5 = 5
             setTime1 = 1
           }
@@ -210,62 +195,163 @@ class StartFragment : Fragment() {
       }
     }
 
-
-
     btnValve1.setOnClickListener {
-      valve1 = !valve1
       GlobalScope.launch(Dispatchers.IO) {
-        setValve(connection.valve1, valve1)
+        try {
+          setValve(connection.valve1, !MbValue.getValve1)
+        } catch (e: ModbusTransportException) {
+          Log.d(TAG, e.printStackTrace().toString())
+        }
       }
-//      ivAir1.isVisible = false
-//      ivAir2.isVisible = valve1
-//      ivAir3.isVisible = false
-      btnValve1.isEnabled = true
-      btnValve2.isEnabled = !valve1
-      btnValve3.isEnabled = !valve1
+      btnValve1.isEnabled = false
+      btnValve2.isEnabled = false
+      btnValve3.isEnabled = false
+
+      Handler(Looper.getMainLooper()).postDelayed({
+        btnValve1.isEnabled = true
+        if (!MbValue.getValve1) {
+          btnValve2.isEnabled = true
+          btnValve3.isEnabled = true
+        }
+      }, 2000)
     }
 
     btnValve2.setOnClickListener {
-      valve2 = !valve2
       GlobalScope.launch(Dispatchers.IO) {
-        // if (connection.getMaster().getValue(connection.modeAuto)){
-        setValve(connection.start, valve2)
-        // } else {
-        //  setValve(connection.valve2, valve2)
-        //}
+        try {
+          if (connection.getMaster().getValue(connection.modeAuto)) {
+            setValve(connection.start, !MbValue.getValve2)
+          } else {
+            setValve(connection.valve2, !MbValue.getValve2)
+          }
+        } catch (e: ErrorResponseException) {
+          Log.d(TAG, e.printStackTrace().toString())
+        } catch (e: ModbusTransportException) {
+          Log.d(TAG, e.printStackTrace().toString())
+        }
       }
-//      description.setText(R.string.valveTopSeatFlush)
-//      ivAir1.isVisible = false
-//      ivAir2.isVisible = false
-//      ivAir3.isVisible = valve2
-      btnValve1.isEnabled = !valve2
-      btnValve2.isEnabled = true
-      btnValve3.isEnabled = !valve2
+      btnValve1.isEnabled = false
+      btnValve2.isEnabled = false
+      btnValve3.isEnabled = false
+
+      Handler(Looper.getMainLooper()).postDelayed({
+        btnValve2.isEnabled = true
+        if (!MbValue.getValve2) {
+          btnValve1.isEnabled = true
+          btnValve3.isEnabled = true
+        }
+      }, 2000)
     }
 
     btnValve3.setOnClickListener {
-      valve3 = !valve3
       GlobalScope.launch(Dispatchers.IO) {
-        setValve(connection.valve3, valve3)
+        try {
+          setValve(connection.valve3, !MbValue.getValve3)
+        } catch (e: ModbusTransportException) {
+          Log.d(TAG, e.printStackTrace().toString())
+        }
       }
-//      description.setText(R.string.valveLowerSeatFlush)
-//      ivAir1.isVisible = valve3
-//      ivAir2.isVisible = false
-//      ivAir3.isVisible = false
-      btnValve1.isEnabled = !valve3
-      btnValve2.isEnabled = !valve3
-      btnValve3.isEnabled = true
+      btnValve1.isEnabled = false
+      btnValve2.isEnabled = false
+      btnValve3.isEnabled = false
+
+      Handler(Looper.getMainLooper()).postDelayed({
+        btnValve3.isEnabled = true
+        if (!MbValue.getValve3) {
+          btnValve2.isEnabled = true
+          btnValve1.isEnabled = true
+        }
+      }, 2000)
+    }
+  }
+
+
+  private fun manualMde() {
+    //test
+    if (MbValue.getValve1) {
+      connection.getMaster().setValue(connection.open, MbValue.getValve1)
+      connection.getMaster().setValue(connection.close, !MbValue.getValve1)
+    } else {
+      connection.getMaster().setValue(connection.open, MbValue.getValve1)
+      connection.getMaster().setValue(connection.close, !MbValue.getValve1)
     }
 
+    //valve1
+    if (MbValue.getOpen and !MbValue.getValve2 and !MbValue.getValve3) {
+      ivValve.setImageResource(R.drawable.valve2_open)
+      description.setText(R.string.valveOpen)
+    } else if (MbValue.getClose and !MbValue.getValve2 and !MbValue.getValve3) {
+      ivValve.setImageResource(R.drawable.valve1_close)
+      description.setText(R.string.valveClose)
+    }
 
+    //valve2
+    if (MbValue.getValve2 and !MbValue.getValve1 and !MbValue.getValve3) {
+      ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
+      description.setText(R.string.valveTopSeatFlush)
+    } else if (!MbValue.getValve2 and !MbValue.getValve1 and !MbValue.getValve3) {
+      ivValve.setImageResource(R.drawable.valve1_close)
+      description.setText(R.string.valveClose)
+    }
+
+    //valve3
+    if (MbValue.getValve3 and !MbValue.getValve1 and !MbValue.getValve2) {
+      ivValve.setImageResource(R.drawable.valve4_lower_seat_flush)
+      description.setText(R.string.valveLowerSeatFlush)
+    } else if (!MbValue.getValve3 and !MbValue.getValve1 and !MbValue.getValve2) {
+      ivValve.setImageResource(R.drawable.valve1_close)
+      description.setText(R.string.valveClose)
+    }
+  }
+
+  private fun autoMde() {
+    //valve1
+    if (MbValue.getValve1) {
+      connection.getMaster().setValue(connection.open, MbValue.getValve1)
+      connection.getMaster().setValue(connection.close, !MbValue.getValve1)
+    } else {
+      connection.getMaster().setValue(connection.open, MbValue.getValve1)
+      connection.getMaster().setValue(connection.close, !MbValue.getValve1)
+    }
+
+    if (connection.getMaster().getValue(connection.open) and !MbValue.getValve2 and !MbValue.getValve3) {
+      ivValve.setImageResource(R.drawable.valve2_open)
+      description.setText(R.string.valveOpen)
+    } else if (connection.getMaster().getValue(connection.close) and !MbValue.getValve2 and !MbValue.getValve3) {
+      ivValve.setImageResource(R.drawable.valve1_close)
+      description.setText(R.string.valveClose)
+    }
+
+    //valve2
+    if (connection.getMaster().getValue(connection.valve2) and !MbValue.getValve1 and !MbValue.getValve3) {
+      ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
+      description.setText(R.string.valveTopSeatFlush)
+    } else if (!connection.getMaster().getValue(connection.valve2) and !MbValue.getValve1 and !MbValue.getValve3) {
+      ivValve.setImageResource(R.drawable.valve1_close)
+      description.setText(R.string.valveClose)
+    }
+
+    //valve3
+    if (connection.getMaster().getValue(connection.valve3) and !MbValue.getValve1 and !MbValue.getValve2) {
+      ivValve.setImageResource(R.drawable.valve4_lower_seat_flush)
+      description.setText(R.string.valveLowerSeatFlush)
+    } else if (!connection.getMaster().getValue(connection.valve3) and !MbValue.getValve1 and !MbValue.getValve2) {
+      ivValve.setImageResource(R.drawable.valve1_close)
+      description.setText(R.string.valveClose)
+    }
   }
 
   private suspend fun setValve(
     valve1: BaseLocator<Boolean>,
     valve2: Boolean
   ) {
+
     withContext(Dispatchers.IO) {
-      connection.getMaster().setValue(valve1, valve2)
+      try {
+        connection.getMaster().setValue(valve1, valve2)
+      } catch (e: ErrorResponseException) {
+        Log.d(TAG, e.printStackTrace().toString())
+      }
     }
   }
 
@@ -280,12 +366,6 @@ class StartFragment : Fragment() {
         APP_ACTIVITY.setTitle(error_connection)
       description.setTextColor(color)
       description.setText(text)
-    }
-  }
-
-  private suspend fun descriptionText(@StringRes text: Int) {
-    withContext(Dispatchers.Main) {
-      APP_ACTIVITY.setTitle(text)
     }
   }
 
