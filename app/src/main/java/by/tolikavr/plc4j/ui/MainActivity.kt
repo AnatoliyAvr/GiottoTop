@@ -1,11 +1,11 @@
-package by.tolikavr.plc4j
+package by.tolikavr.plc4j.ui
 
-import androidx.appcompat.widget.Toolbar
 import android.os.Bundle
-import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import by.tolikavr.plc4j.R
 import by.tolikavr.plc4j.databinding.ActivityMainBinding
 import by.tolikavr.plc4j.utilits.APP_ACTIVITY
 import by.tolikavr.plc4j.utilits.AppPreference
@@ -23,10 +23,10 @@ class MainActivity : AppCompatActivity() {
     _binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(mBinding.root)
     APP_ACTIVITY = this
+    AppPreference.getPreference(APP_ACTIVITY)
     navController = Navigation.findNavController(this, R.id.nav_host_fragment)
     toolbar = mBinding.toolbar
     setSupportActionBar(toolbar)
-    AppPreference.getPreference(APP_ACTIVITY)
   }
 
   override fun onDestroy() {

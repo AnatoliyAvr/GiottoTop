@@ -15,9 +15,10 @@ import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import by.tolikavr.plc4j.App
 import by.tolikavr.plc4j.R
 import by.tolikavr.plc4j.databinding.StartFragmentBinding
-import by.tolikavr.plc4j.modbus.Connection
+import by.tolikavr.plc4j.modbus.ConnectionPLC
 import by.tolikavr.plc4j.model.MbValue
 import by.tolikavr.plc4j.utilits.APP_ACTIVITY
 import by.tolikavr.plc4j.utilits.AppPreference
@@ -27,14 +28,10 @@ import com.serotonin.modbus4j.exception.ModbusTransportException
 import com.serotonin.modbus4j.locator.BaseLocator
 import kotlinx.coroutines.*
 
-
-const val TIME5 = "time5"
-const val TIME1 = "time1"
-
 @SuppressLint("ResourceAsColor")
 class StartFragment : Fragment() {
 
-  private val TAG = "AAA"
+  private val TAG = "StartFragment"
   private var _binding: StartFragmentBinding? = null
   private val mBinding get() = _binding!!
   private lateinit var viewModel: StartViewModel
@@ -47,10 +44,16 @@ class StartFragment : Fragment() {
   private lateinit var ivAir3: ImageView
   private lateinit var description: TextView
   private lateinit var ivValve: ImageView
-  private lateinit var connection: Connection
+  private lateinit var connection: ConnectionPLC
   private lateinit var job: Job
-  private var setTime5 = 0
-  private var setTime1 = 0
+  private lateinit var app: App
+
+  private var initBtn = true
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    app = context?.applicationContext as App
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -76,12 +79,10 @@ class StartFragment : Fragment() {
     initialization()
 
     job = GlobalScope.launch(Dispatchers.IO) {
-      var init = true
-      var init1 = true
       while (true) {
         delay(100)
         when {
-          init -> {
+          app.getInitStart() -> {
             try {
               withContext(Dispatchers.Main) {
                 btnValve1.visibility = View.GONE
@@ -96,12 +97,11 @@ class StartFragment : Fragment() {
               Log.d(TAG, e.printStackTrace().toString())
               continue
             }
-            init = false
+            app.setInitStart(false)
           }
           connection.getMaster().testSlaveNode(1) -> {
             try {
               connection.initMB()
-
               when {
                 MbValue.getModeAuto -> {
                   withContext(Dispatchers.Main) {
@@ -117,14 +117,6 @@ class StartFragment : Fragment() {
                   }
                   autoMde()
                 }
-                MbValue.getModeOff -> {
-                  withContext(Dispatchers.Main) {
-                    APP_ACTIVITY.setTitle(R.string.modeOff)
-                    btnValve1.visibility = View.GONE
-                    btnValve2.visibility = View.INVISIBLE
-                    btnValve3.visibility = View.GONE
-                  }
-                }
                 MbValue.getModeManual -> {
                   withContext(Dispatchers.Main) {
                     APP_ACTIVITY.setTitle(R.string.modeManual)
@@ -137,15 +129,13 @@ class StartFragment : Fragment() {
                     ivAir2.isVisible = MbValue.getValve1
                     ivAir3.isVisible = MbValue.getValve2
                   }
-
                   manualMde()
                 }
                 else -> {
                   withContext(Dispatchers.Main) {
-                    APP_ACTIVITY.setTitle(R.string.modeNotSet)
+                    APP_ACTIVITY.setTitle(R.string.modeOff)
                     btnValve1.visibility = View.GONE
                     btnValve2.visibility = View.INVISIBLE
-                    description.text = ""
                     btnValve3.visibility = View.GONE
                   }
                 }
@@ -154,17 +144,19 @@ class StartFragment : Fragment() {
             } catch (e: ErrorResponseException) {
               descriptionStatus(Color.RED, R.string.error_ip_port, R.string.error_illegal_function, true)
               Log.d(TAG, e.printStackTrace().toString())
-              init1 = true
+              initBtn = true
               continue
             } catch (e: ModbusTransportException) {
               descriptionStatus(Color.RED, R.string.no_connection, R.string.error_connection, true)
               Log.d(TAG, e.printStackTrace().toString())
-              init1 = true
+              initBtn = true
               continue
             }
 
-            if (init1) {
+            if (initBtn) {
               description.setTextColor(R.color.gray_dark)
+              setValve(connection.setTime5, AppPreference.getTime5()!!.toInt())
+              setValve(connection.setTime1, AppPreference.getTime1()!!.toInt())
               withContext(Dispatchers.Main) {
                 if (MbValue.getValve1) {
                   btnValve1.isEnabled = true
@@ -182,16 +174,13 @@ class StartFragment : Fragment() {
                   btnValve3.isEnabled = true
                 }
               }
-              init1 = false
+              initBtn = false
             }
-            setTime5 = 5
-            setTime1 = 1
           }
           else -> {
-            init = true
+            app.setInitStart(true)
           }
         }
-
       }
     }
 
@@ -342,8 +331,22 @@ class StartFragment : Fragment() {
   }
 
   private suspend fun setValve(
-    valve1: BaseLocator<Boolean>,
-    valve2: Boolean
+    value1: BaseLocator<Boolean>,
+    value2: Boolean,
+  ) {
+
+    withContext(Dispatchers.IO) {
+      try {
+        connection.getMaster().setValue(value1, value2)
+      } catch (e: ErrorResponseException) {
+        Log.d(TAG, e.printStackTrace().toString())
+      }
+    }
+  }
+
+  private suspend fun setValve(
+    valve1: BaseLocator<Number>,
+    valve2: Number,
   ) {
 
     withContext(Dispatchers.IO) {
@@ -377,17 +380,16 @@ class StartFragment : Fragment() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
       R.id.btn_settings -> {
-        val bundle = Bundle()
-        bundle.putInt(TIME5, setTime5)
-        bundle.putInt(TIME1, setTime1)
-        APP_ACTIVITY.navController.navigate(R.id.action_startFragment_to_settingsFragment, bundle)
+        AppPreference.setTime5(MbValue.getSetTime5.toString())
+        AppPreference.setTime1(MbValue.getSetTime1.toString())
+        APP_ACTIVITY.navController.navigate(R.id.action_startFragment_to_settingsFragment)
       }
     }
     return super.onOptionsItemSelected(item)
   }
 
   private fun initialization() {
-    connection = Connection
+    connection = ConnectionPLC
   }
 
   override fun onStop() {

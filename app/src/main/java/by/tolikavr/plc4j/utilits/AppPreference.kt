@@ -7,6 +7,8 @@ object AppPreference {
 
   private const val INIT_IP = "initIp"
   private const val INIT_PORT = "initPort"
+  private const val INIT_TIME5 = "initTime5"
+  private const val INIT_TIME1 = "initTime1"
   private const val NAME_PREF = "preference"
 
   private lateinit var mPreferences: SharedPreferences
@@ -22,9 +24,21 @@ object AppPreference {
       .apply()
   }
 
-  fun setPort(init: Int) {
+  fun setPort(init: String) {
     mPreferences.edit()
-      .putInt(INIT_PORT, init)
+      .putString(INIT_PORT, init)
+      .apply()
+  }
+
+  fun setTime5(init: String) {
+    mPreferences.edit()
+      .putString(INIT_TIME5, init)
+      .apply()
+  }
+
+  fun setTime1(init: String) {
+    mPreferences.edit()
+      .putString(INIT_TIME1, init)
       .apply()
   }
 
@@ -32,8 +46,16 @@ object AppPreference {
     return mPreferences.getString(INIT_IP, "127.0.0.1")
   }
 
-  fun getPort(): Int {
-    return mPreferences.getInt(INIT_PORT, 502)
+  fun getPort(): String? {
+    return mPreferences.getString(INIT_PORT, "502")
+  }
+
+  fun getTime5(): String? {
+    return mPreferences.getString(INIT_TIME5, "0")
+  }
+
+  fun getTime1(): String? {
+    return mPreferences.getString(INIT_TIME1, "0")
   }
 
 }

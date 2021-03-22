@@ -1,9 +1,9 @@
 <resources>
   <string name="app_name">GiottoTop</string>
+  <string name="app_version">version 0.1</string>
   <string name="modeAuto">АВТОМАТЧЕСКИЙ РЕЖИМ</string>
   <string name="modeOff">ОТКЛЮЧЕН</string>
   <string name="modeManual">РУЧНОЙ РЕЖИМ</string>
-  <string name="modeNotSet">РЕЖИМ НЕ УСТАНОВЛЕН</string>
   <string name="settings">НАСТРОЙКИ</string>
   <string name="connecting">СОЕДИНЕНИЕ…</string>
   <string name="error_connection">ОШИБКА</string>
@@ -25,6 +25,12 @@
   <string name="no_connection">НЕТ СВЯЗИ С КОНТРОЛЛЕРОМ</string>
   <string name="text_timer5">Таймер открытия\nклапана сек.</string>
   <string name="text_timer1">Таймер простоя сек.</string>
+  <string name="save">Сохранить</string>
+  <string name="default_str">По умолчанию</string>
+  <string name="default_ip">192.168.122.85</string>
+  <string name="default_port">502</string>
+  <string name="default_time5">5</string>
+  <string name="default_time1">1</string>
 
   <string-array name="mode">
     <item>АВТОМАТИЧЕСКИЙ РЕЖИМ</item>

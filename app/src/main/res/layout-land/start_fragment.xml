@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/background"
+  android:background="@color/white"
   tools:context=".ui.start.StartFragment">
 
   <androidx.constraintlayout.widget.Guideline
@@ -48,33 +48,32 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/ic_air"
-    android:visibility="gone"
+    android:visibility="invisible"
     app:layout_constraintBottom_toTopOf="@+id/view_bottom"
     app:layout_constraintStart_toStartOf="@+id/left_guideline"
     app:layout_constraintTop_toTopOf="@+id/iv_valve"
-    app:layout_constraintVertical_bias="0.205" />
+    app:layout_constraintVertical_bias="0.252" />
 
   <ImageView
     android:id="@+id/iv_air2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/ic_air"
-    android:visibility="gone"
+    android:visibility="invisible"
     app:layout_constraintBottom_toTopOf="@+id/view_bottom"
     app:layout_constraintStart_toStartOf="@+id/left_guideline"
     app:layout_constraintTop_toTopOf="@+id/iv_valve"
-    app:layout_constraintVertical_bias="0.386" />
-
+    app:layout_constraintVertical_bias="0.500"/>
   <ImageView
     android:id="@+id/iv_air3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:src="@drawable/ic_air"
-    android:visibility="gone"
+    android:visibility="invisible"
     app:layout_constraintBottom_toTopOf="@+id/view_bottom"
     app:layout_constraintStart_toStartOf="@+id/left_guideline"
     app:layout_constraintTop_toTopOf="@+id/iv_valve"
-    app:layout_constraintVertical_bias="0.427" />
+    app:layout_constraintVertical_bias="0.556" />
 
   <View
     android:id="@+id/view_bottom"

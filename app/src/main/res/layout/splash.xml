@@ -4,29 +4,28 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="@color/white"
   tools:context=".ui.MainActivity">
 
-  <androidx.appcompat.widget.Toolbar
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="@color/purple_500"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+  <ImageView
+    android:id="@+id/iv_btc"
+    android:layout_width="@dimen/image_splash_size"
+    android:layout_height="@dimen/image_splash_size"
+    android:src="@drawable/logo"
+    app:layout_constraintBottom_toTopOf="@+id/textView"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-  <fragment
-    android:id="@+id/nav_host_fragment"
-    android:name="androidx.navigation.fragment.NavHostFragment"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    app:defaultNavHost="true"
+  <TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin16"
+    android:text="@string/app_version"
+    android:textSize="@dimen/app_large_text"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/toolbar"
-    app:navGraph="@navigation/navigation" />
-
+    app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

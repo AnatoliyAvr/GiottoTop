@@ -7,15 +7,15 @@ import com.serotonin.modbus4j.ip.IpParameters
 import com.serotonin.modbus4j.ip.tcp.TcpMaster
 import com.serotonin.modbus4j.locator.BaseLocator
 
-object Connection {
+object ConnectionPLC {
 
   private lateinit var master: TcpMaster
 
   //  fun initialization(setHost: String? = "192.168.1.10", setPort: Int = 502) {
-  fun initialization(setHost: String? = "192.168.122.85", setPort: Int = 502) {
+  fun initialization(setHost: String? = "192.168.122.85", setPort: String? = "502") {
     val ipParameters: IpParameters = IpParameters().apply {
       host = setHost
-      port = setPort
+      port = setPort!!.toInt()
     }
     val modbusFactory = ModbusFactory()
     master = modbusFactory.createTcpMaster(ipParameters, true) as TcpMaster
@@ -33,8 +33,7 @@ object Connection {
   val close = BaseLocator.coilStatus(1, 5)!!
 
   val modeAuto = BaseLocator.coilStatus(1, 8)!!
-  val modeOff = BaseLocator.coilStatus(1, 9)!!
-  val modeManual = BaseLocator.coilStatus(1, 10)!!
+  val modeManual = BaseLocator.coilStatus(1, 9)!!
 
   val setTime5 = BaseLocator.holdingRegister(1, 1, DataType.TWO_BYTE_INT_UNSIGNED)!!
   val setTime1 = BaseLocator.holdingRegister(1, 2, DataType.TWO_BYTE_INT_UNSIGNED)!!
@@ -47,7 +46,6 @@ object Connection {
     MbValue.getOpen = master.getValue(open)
     MbValue.getClose = master.getValue(close)
     MbValue.getModeAuto = master.getValue(modeAuto)
-    MbValue.getModeOff = master.getValue(modeOff)
     MbValue.getModeManual = master.getValue(modeManual)
     MbValue.getSetTime5 = master.getValue(setTime5)
     MbValue.getSetTime1 = master.getValue(setTime1)

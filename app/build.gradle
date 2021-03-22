@@ -72,7 +72,6 @@ dependencies {
   //spinner
   implementation "com.github.skydoves:powerspinner:1.1.7"
 
-
   def room_version = "2.2.6"
 
   implementation "androidx.room:room-runtime:$room_version"
@@ -87,5 +86,9 @@ dependencies {
 
   // optional - Test helpers
   testImplementation "androidx.room:room-testing:$room_version"
+
+  def leakcanary = "2.6"
+
+  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary"
 
 }

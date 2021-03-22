@@ -11,7 +11,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:layout_constraintGuide_percent="0.45" />
+    app:layout_constraintGuide_percent="0.2" />
 
   <TextView
     android:id="@+id/tv_ip"
@@ -29,12 +29,11 @@
     android:id="@+id/tv_port"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin32"
-    android:layout_marginTop="@dimen/margin32"
+    android:layout_marginTop="@dimen/margin64"
     android:text="@string/port"
     android:textColor="@color/gray_dark"
     android:textSize="24sp"
-    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintStart_toStartOf="@+id/tv_ip"
     app:layout_constraintTop_toBottomOf="@id/tv_ip" />
 
   <EditText
@@ -67,59 +66,80 @@
     android:textColor="@color/gray_dark"
     android:textSize="24sp"
     app:layout_constraintBottom_toBottomOf="@+id/tv_port"
+    app:layout_constraintEnd_toEndOf="@+id/et_ip"
     app:layout_constraintStart_toEndOf="@id/left_guideline"
     app:layout_constraintTop_toTopOf="@id/tv_port" />
+
+  <Button
+    android:id="@+id/default_ip_port"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin32"
+    android:text="@string/default_str"
+    app:layout_constraintEnd_toStartOf="@+id/save_ip_port"
+    app:layout_constraintStart_toStartOf="@+id/tv_ip"
+    app:layout_constraintTop_toBottomOf="@+id/tv_port" />
+
+  <Button
+    android:id="@+id/save_ip_port"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin32"
+    android:text="@string/save"
+    app:layout_constraintEnd_toEndOf="@+id/et_ip"
+    app:layout_constraintStart_toEndOf="@+id/default_ip_port"
+    app:layout_constraintTop_toBottomOf="@+id/tv_port" />
 
   <androidx.constraintlayout.widget.Guideline
     android:id="@+id/left_guideline1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:layout_constraintGuide_percent="0.69" />
+    app:layout_constraintGuide_percent="0.5" />
 
   <TextView
     android:id="@+id/tv_timer5"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin32"
-    android:layout_marginTop="@dimen/margin64"
     android:text="@string/text_timer5"
     android:textColor="@color/gray_dark"
     android:textSize="24sp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tv_port" />
+    app:layout_constraintBottom_toBottomOf="@+id/tv_ip"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline1"
+    app:layout_constraintTop_toTopOf="@+id/tv_ip" />
 
   <TextView
     android:id="@+id/tv_timer1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin32"
-    android:layout_marginTop="@dimen/margin32"
     android:text="@string/text_timer1"
     android:textColor="@color/gray_dark"
     android:textSize="24sp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tv_timer5" />
+    app:layout_constraintBottom_toBottomOf="@+id/tv_port"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline1"
+    app:layout_constraintTop_toTopOf="@+id/tv_port" />
 
   <EditText
     android:id="@+id/et_timer5"
     android:layout_width="100dp"
     android:layout_height="50dp"
+    android:layout_marginEnd="@dimen/margin16"
     android:background="@drawable/edit_text_style"
     android:inputType="number"
     android:selectAllOnFocus="true"
     android:textAlignment="center"
     android:textColor="@color/gray_dark"
     android:textSize="24sp"
-    app:layout_constraintBottom_toBottomOf="@+id/tv_timer5"
-    app:layout_constraintStart_toEndOf="@id/left_guideline1"
-    app:layout_constraintTop_toTopOf="@id/tv_timer5"
+    app:layout_constraintBottom_toBottomOf="@id/tv_timer5"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/tv_timer5"
     tools:text="5" />
 
   <EditText
     android:id="@+id/et_timer1"
     android:layout_width="100dp"
     android:layout_height="50dp"
+    android:layout_marginEnd="@dimen/margin16"
     android:background="@drawable/edit_text_style"
     android:inputType="number"
     android:maxLength="4"
@@ -128,9 +148,28 @@
     android:textColor="@color/gray_dark"
     android:textSize="24sp"
     app:layout_constraintBottom_toBottomOf="@+id/tv_timer1"
-    app:layout_constraintStart_toEndOf="@id/left_guideline1"
-    app:layout_constraintTop_toTopOf="@id/tv_timer1"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/tv_timer1"
     tools:text="1" />
+
+  <Button
+    android:id="@+id/default_time"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/default_str"
+    app:layout_constraintEnd_toStartOf="@+id/save_set_time"
+    app:layout_constraintStart_toStartOf="@+id/left_guideline1"
+    app:layout_constraintTop_toTopOf="@+id/default_ip_port" />
+
+  <Button
+    android:id="@+id/save_set_time"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/save"
+    app:layout_constraintBottom_toBottomOf="@+id/default_time"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/default_time"
+    app:layout_constraintTop_toTopOf="@+id/default_time" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
