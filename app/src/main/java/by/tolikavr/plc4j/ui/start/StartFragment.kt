@@ -115,7 +115,7 @@ class StartFragment : Fragment() {
                     ivAir2.isVisible = MbValue.getValve1
                     ivAir3.isVisible = MbValue.getValve2
                   }
-                  autoMde()
+                  modeIndicator()
                 }
                 MbValue.getModeManual -> {
                   withContext(Dispatchers.Main) {
@@ -129,7 +129,7 @@ class StartFragment : Fragment() {
                     ivAir2.isVisible = MbValue.getValve1
                     ivAir3.isVisible = MbValue.getValve2
                   }
-                  manualMde()
+                  modeIndicator()
                 }
                 else -> {
                   withContext(Dispatchers.Main) {
@@ -255,7 +255,7 @@ class StartFragment : Fragment() {
   }
 
 
-  private fun manualMde() {
+  private fun modeIndicator() {
     //test
     if (MbValue.getValve1) {
       connection.getMaster().setValue(connection.open, MbValue.getValve1)
@@ -274,59 +274,20 @@ class StartFragment : Fragment() {
       description.setText(R.string.valveClose)
     }
 
-    //valve2
-    if (MbValue.getValve2 and !MbValue.getValve1 and !MbValue.getValve3) {
-      ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
-      description.setText(R.string.valveTopSeatFlush)
-    } else if (!MbValue.getValve2 and !MbValue.getValve1 and !MbValue.getValve3) {
-      ivValve.setImageResource(R.drawable.valve1_close)
-      description.setText(R.string.valveClose)
-    }
-
-    //valve3
-    if (MbValue.getValve3 and !MbValue.getValve1 and !MbValue.getValve2) {
-      ivValve.setImageResource(R.drawable.valve4_lower_seat_flush)
-      description.setText(R.string.valveLowerSeatFlush)
-    } else if (!MbValue.getValve3 and !MbValue.getValve1 and !MbValue.getValve2) {
-      ivValve.setImageResource(R.drawable.valve1_close)
-      description.setText(R.string.valveClose)
-    }
-  }
-
-  private fun autoMde() {
-    //valve1
-    if (MbValue.getValve1) {
-      connection.getMaster().setValue(connection.open, MbValue.getValve1)
-      connection.getMaster().setValue(connection.close, !MbValue.getValve1)
-    } else {
-      connection.getMaster().setValue(connection.open, MbValue.getValve1)
-      connection.getMaster().setValue(connection.close, !MbValue.getValve1)
-    }
-
-    if (connection.getMaster().getValue(connection.open) and !MbValue.getValve2 and !MbValue.getValve3) {
-      ivValve.setImageResource(R.drawable.valve2_open)
-      description.setText(R.string.valveOpen)
-    } else if (connection.getMaster().getValue(connection.close) and !MbValue.getValve2 and !MbValue.getValve3) {
-      ivValve.setImageResource(R.drawable.valve1_close)
-      description.setText(R.string.valveClose)
-    }
-
-    //valve2
-    if (connection.getMaster().getValue(connection.valve2) and !MbValue.getValve1 and !MbValue.getValve3) {
-      ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
-      description.setText(R.string.valveTopSeatFlush)
-    } else if (!connection.getMaster().getValue(connection.valve2) and !MbValue.getValve1 and !MbValue.getValve3) {
-      ivValve.setImageResource(R.drawable.valve1_close)
-      description.setText(R.string.valveClose)
-    }
-
-    //valve3
-    if (connection.getMaster().getValue(connection.valve3) and !MbValue.getValve1 and !MbValue.getValve2) {
-      ivValve.setImageResource(R.drawable.valve4_lower_seat_flush)
-      description.setText(R.string.valveLowerSeatFlush)
-    } else if (!connection.getMaster().getValue(connection.valve3) and !MbValue.getValve1 and !MbValue.getValve2) {
-      ivValve.setImageResource(R.drawable.valve1_close)
-      description.setText(R.string.valveClose)
+    //valve2 valve 3
+    when {
+      MbValue.getValve2 and !MbValue.getValve1 and !MbValue.getValve3 -> {
+        ivValve.setImageResource(R.drawable.valve3_top_seat_flush)
+        description.setText(R.string.valveTopSeatFlush)
+      }
+      MbValue.getValve3 and !MbValue.getValve1 and !MbValue.getValve2 -> {
+        ivValve.setImageResource(R.drawable.valve4_lower_seat_flush)
+        description.setText(R.string.valveLowerSeatFlush)
+      }
+      !MbValue.getValve3 and !MbValue.getValve1 and !MbValue.getValve2 -> {
+        ivValve.setImageResource(R.drawable.valve1_close)
+        description.setText(R.string.valveClose)
+      }
     }
   }
 
@@ -401,5 +362,4 @@ class StartFragment : Fragment() {
     super.onDestroy()
     _binding = null
   }
-
 }

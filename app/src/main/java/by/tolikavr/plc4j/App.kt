@@ -4,7 +4,7 @@ import android.app.Application
 
 open class App : Application() {
 
-  private var initStart = true
+  private var initStart = false
 
   fun getInitStart() = initStart
 
