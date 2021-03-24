@@ -21,7 +21,7 @@
     android:layout_marginTop="@dimen/margin32"
     android:text="@string/ip"
     android:textColor="@color/gray_dark"
-    android:textSize="24sp"
+    android:textSize="22sp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
     android:layout_marginTop="@dimen/margin32"
     android:text="@string/port"
     android:textColor="@color/gray_dark"
-    android:textSize="24sp"
+    android:textSize="22sp"
     app:layout_constraintStart_toStartOf="@+id/tv_ip"
     app:layout_constraintTop_toBottomOf="@id/tv_ip" />
 
@@ -104,7 +104,7 @@
     android:layout_marginTop="@dimen/margin64"
     android:text="@string/text_timer5"
     android:textColor="@color/gray_dark"
-    android:textSize="24sp"
+    android:textSize="22sp"
     app:layout_constraintStart_toStartOf="@+id/tv_ip"
     app:layout_constraintTop_toBottomOf="@+id/save_ip_port" />
 
@@ -115,7 +115,7 @@
     android:layout_marginTop="@dimen/margin32"
     android:text="@string/text_timer1"
     android:textColor="@color/gray_dark"
-    android:textSize="24sp"
+    android:textSize="22sp"
     app:layout_constraintStart_toStartOf="@+id/tv_ip"
     app:layout_constraintTop_toBottomOf="@id/tv_timer5" />
 

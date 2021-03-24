@@ -11,15 +11,4 @@ object MbValue {
   var getModeManual: Boolean = false
   var getSetTime5: Number = 0
   var getSetTime1: Number = 0
-
-  var setStart: Boolean = false
-  var setValve1: Boolean = false
-  var setValve2: Boolean = false
-  var setValve3: Boolean = false
-  var setOpen: Boolean = false
-  var setClose: Boolean = false
-  var setModeAuto: Boolean = false
-  var setModeManual: Boolean = false
-  var setSetTime5: Number = 0
-  var setSetTime1: Number = 0
 }

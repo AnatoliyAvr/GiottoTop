@@ -14,5 +14,4 @@ class StartViewModel : ViewModel() {
   fun setInitStart(state: Boolean) {
     _initStart.value = state
   }
-
 }

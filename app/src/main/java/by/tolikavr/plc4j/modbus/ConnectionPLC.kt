@@ -32,8 +32,8 @@ object ConnectionPLC {
   val open = BaseLocator.coilStatus(1, 4)!!
   val close = BaseLocator.coilStatus(1, 5)!!
 
-  val modeAuto = BaseLocator.coilStatus(1, 8)!!
-  val modeManual = BaseLocator.coilStatus(1, 9)!!
+  private val modeAuto = BaseLocator.coilStatus(1, 8)!!
+  private val modeManual = BaseLocator.coilStatus(1, 9)!!
 
   val setTime5 = BaseLocator.holdingRegister(1, 1, DataType.TWO_BYTE_INT_UNSIGNED)!!
   val setTime1 = BaseLocator.holdingRegister(1, 2, DataType.TWO_BYTE_INT_UNSIGNED)!!

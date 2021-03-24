@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import by.tolikavr.plc4j.databinding.SplashBinding
 import by.tolikavr.plc4j.modbus.ConnectionPLC
-import by.tolikavr.plc4j.utilits.APP_ACTIVITY
 import by.tolikavr.plc4j.utilits.AppPreference
 import com.serotonin.modbus4j.exception.ModbusInitException
 import kotlinx.coroutines.*
@@ -29,9 +28,9 @@ class SplashActivity : AppCompatActivity() {
         ConnectionPLC.initialization()
         ConnectionPLC.initMB()
       } catch (e: ModbusInitException) {
-        Log.d("AAA", "dd")
+        Log.d("AAA", e.printStackTrace().toString())
       }
-      delay(2000)
+      delay(200)
       val intent = Intent(this@SplashActivity, MainActivity::class.java)
       startActivity(intent)
       finish()

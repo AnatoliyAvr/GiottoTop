@@ -208,7 +208,7 @@ class StartFragment : Fragment() {
     btnValve2.setOnClickListener {
       GlobalScope.launch(Dispatchers.IO) {
         try {
-          if (connection.getMaster().getValue(connection.modeAuto)) {
+          if (MbValue.getModeAuto) {
             setValve(connection.start, !MbValue.getValve2)
           } else {
             setValve(connection.valve2, !MbValue.getValve2)
@@ -350,6 +350,9 @@ class StartFragment : Fragment() {
   }
 
   private fun initialization() {
+    btnValve1.visibility = View.GONE
+    btnValve2.visibility = View.INVISIBLE
+    btnValve3.visibility = View.GONE
     connection = ConnectionPLC
   }
 
