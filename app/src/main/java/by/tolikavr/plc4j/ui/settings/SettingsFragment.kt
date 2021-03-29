@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import by.tolikavr.plc4j.R
 import by.tolikavr.plc4j.databinding.SettingsFragmentBinding
 import by.tolikavr.plc4j.utilits.APP_ACTIVITY
