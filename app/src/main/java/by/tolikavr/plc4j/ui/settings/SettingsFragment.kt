@@ -101,5 +101,4 @@ class SettingsFragment : Fragment() {
     super.onDestroy()
     _binding = null
   }
-
 }

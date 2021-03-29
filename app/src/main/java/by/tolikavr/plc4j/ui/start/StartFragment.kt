@@ -47,6 +47,10 @@ class StartFragment : Fragment() {
   private lateinit var connection: ConnectionPLC
   private lateinit var job: Job
   private lateinit var app: App
+  private val delayMillis = 1000L
+  private var value1Old = false
+  private var value2Old = false
+  private var value3Old = false
 
   private var initBtn = true
 
@@ -128,6 +132,10 @@ class StartFragment : Fragment() {
                     ivAir1.isVisible = MbValue.getValve3
                     ivAir2.isVisible = MbValue.getValve1
                     ivAir3.isVisible = MbValue.getValve2
+
+                    stateBtn1()
+                    stateBtn2()
+                    stateBtn3()
                   }
                   modeIndicator()
                 }
@@ -188,21 +196,13 @@ class StartFragment : Fragment() {
       GlobalScope.launch(Dispatchers.IO) {
         try {
           setValve(connection.valve1, !MbValue.getValve1)
+        } catch (e: ErrorResponseException) {
+          Log.d(TAG, e.printStackTrace().toString())
         } catch (e: ModbusTransportException) {
           Log.d(TAG, e.printStackTrace().toString())
         }
       }
-      btnValve1.isEnabled = false
-      btnValve2.isEnabled = false
-      btnValve3.isEnabled = false
-
-      Handler(Looper.getMainLooper()).postDelayed({
-        btnValve1.isEnabled = true
-        if (!MbValue.getValve1) {
-          btnValve2.isEnabled = true
-          btnValve3.isEnabled = true
-        }
-      }, 2000)
+      stateBtn1()
     }
 
     btnValve2.setOnClickListener {
@@ -219,6 +219,43 @@ class StartFragment : Fragment() {
           Log.d(TAG, e.printStackTrace().toString())
         }
       }
+      stateBtn2()
+    }
+
+    btnValve3.setOnClickListener {
+      GlobalScope.launch(Dispatchers.IO) {
+        try {
+          setValve(connection.valve3, !MbValue.getValve3)
+        } catch (e: ErrorResponseException) {
+          Log.d(TAG, e.printStackTrace().toString())
+        } catch (e: ModbusTransportException) {
+          Log.d(TAG, e.printStackTrace().toString())
+        }
+      }
+      stateBtn3()
+    }
+  }
+
+
+  private fun stateBtn1() {
+    if (MbValue.getValve1 == value1Old) {
+      btnValve1.isEnabled = false
+      btnValve2.isEnabled = false
+      btnValve3.isEnabled = false
+
+      Handler(Looper.getMainLooper()).postDelayed({
+        btnValve1.isEnabled = true
+        if (!MbValue.getValve1) {
+          btnValve2.isEnabled = true
+          btnValve3.isEnabled = true
+        }
+      }, delayMillis)
+      value1Old = !MbValue.getValve1
+    }
+  }
+
+  private fun stateBtn2() {
+    if (MbValue.getValve2 == value2Old) {
       btnValve1.isEnabled = false
       btnValve2.isEnabled = false
       btnValve3.isEnabled = false
@@ -229,17 +266,13 @@ class StartFragment : Fragment() {
           btnValve1.isEnabled = true
           btnValve3.isEnabled = true
         }
-      }, 2000)
+      }, delayMillis)
+      value2Old = !MbValue.getValve2
     }
+  }
 
-    btnValve3.setOnClickListener {
-      GlobalScope.launch(Dispatchers.IO) {
-        try {
-          setValve(connection.valve3, !MbValue.getValve3)
-        } catch (e: ModbusTransportException) {
-          Log.d(TAG, e.printStackTrace().toString())
-        }
-      }
+  private fun stateBtn3() {
+    if (MbValue.getValve3 == value3Old) {
       btnValve1.isEnabled = false
       btnValve2.isEnabled = false
       btnValve3.isEnabled = false
@@ -250,10 +283,10 @@ class StartFragment : Fragment() {
           btnValve2.isEnabled = true
           btnValve1.isEnabled = true
         }
-      }, 2000)
+      }, delayMillis)
+      value3Old = !MbValue.getValve3
     }
   }
-
 
   private fun modeIndicator() {
     //test

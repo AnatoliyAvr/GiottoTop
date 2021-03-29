@@ -20,6 +20,7 @@
     tools:layout="@layout/settings_fragment" >
     <action
       android:id="@+id/action_settingsFragment_to_startFragment"
-      app:destination="@id/startFragment" />
+      app:destination="@id/startFragment"
+      app:launchSingleTop="true" />
   </fragment>
 </navigation>

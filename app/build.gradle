@@ -89,5 +89,5 @@ dependencies {
 
   def leakcanary = "2.6"
 
-  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary"
+//  debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary"
 }
