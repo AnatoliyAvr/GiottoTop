@@ -113,6 +113,7 @@ class StartFragment : Fragment() {
                     btnValve1.visibility = View.GONE
                     btnValve2.visibility = View.VISIBLE
                     btnValve2.setText(R.string.start)
+                    btnValve2.textSize = 20f
                     btnValve3.visibility = View.GONE
 
                     ivAir1.isVisible = MbValue.getValve3
@@ -127,6 +128,7 @@ class StartFragment : Fragment() {
                     btnValve1.visibility = View.VISIBLE
                     btnValve2.visibility = View.VISIBLE
                     btnValve2.setText(R.string.valve2)
+                    btnValve2.textSize = 11f
                     btnValve3.visibility = View.VISIBLE
 
                     ivAir1.isVisible = MbValue.getValve3
