@@ -393,7 +393,7 @@ class StartFragment : Fragment() {
 
   override fun onStop() {
     super.onStop()
-    job.cancel()
+    job.cancelChildren()
   }
 
   override fun onDestroy() {
